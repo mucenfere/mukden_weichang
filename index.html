@@ -264,14 +264,8 @@ const wc_pg_all = await loadGeoJSON('./data/mukden_weichang_pg.geojson', {
     fillOpacity: 0.08
   },
 });
-          onEachFeature: (feature, layer) => {
-            const p = feature.properties || {};
-            const name = p.name_chf || p.name || p.NAME_FT || '정보';
-            layer.bindPopup(`<b>${name}</b>`);
-          }
-        })
-      );
-
+wc_pg_all.addTo(map);
+      
       // 위장_포인트
       const wc_pt = await loadGeoJSON('./data/mukden_weichang_pt.geojson', {
        label: true,
@@ -476,9 +470,9 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
           "역참": giyamun_pt, 
           "유조변(강희-옹정)": wpkangxi_bundle, 
           "유조변(건륭이후)": wpqianlong_bundle },
-        "성경위장": { "성경위장": wc_pg_all, }
-        "성경위장 105小圍": { "성경위장": wc_pt, }  
-        "성경위장카룬": { "성경위장카룬": jq_weichang, }  
+        "성경위장": { "성경위장": wc_pg_all }, 
+        "성경위장 105小圍": { "성경위장": wc_pt },   
+        "성경위장카룬": { "성경위장카룬": jq_weichang },   
         "성경 변내/변외카룬": { 
           "邊臺(강희기 이후)": kx_tai, 
           "변외카룬(강희말기)": kx_tulergi, 
