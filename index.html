@@ -442,10 +442,25 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
       wpqianlong_bundle.addTo(map)
       
       const groupedOverlays = {
-        "기본지리정보": { "성경장군 관할 경계선": admin_v1, "행정 지명(lv1/lv2)": admin_pts, "역참": giyamun_pt, "유조변(강희-옹정)": wpkangxi_bundle, "유조변(건륭이후)": wpqianlong_bundle },
-        "성경카룬": { "邊臺(강희기 이후)": kx_tai, "변외카룬(강희말기)": kx_tulergi, "변내/변외카룬(옹정초기)": karun_yz_bundle, 변내/변외카룬(건륭중기)": karun_ql_bundle,
-        "변내/변외카룬(가경 9년)": karun_jq_bundle, "성경위장 카룬(가경 23년)": jq_weichang, "변내/변외카룬(도광 27년)": karun_dg_bundle },
-        "참고자료_CHGIS (1820)": { "省 경계선(1820_CHGIS)": chgisprov_pgn, "府 경계선(1820_CHGIS)": chgispref_pgn, "府 치소(1820_CHGIS)": chgispref_pts, "지명(1820_CHGIS)": chgistwn_pts}
+        "기본지리정보": { 
+          "성경장군 관할 경계선": admin_v1, 
+          "행정 지명(lv1/lv2)": admin_pts, 
+          "역참": giyamun_pt, 
+          "유조변(강희-옹정)": wpkangxi_bundle, 
+          "유조변(건륭이후)": wpqianlong_bundle },
+        "성경카룬": { 
+          "邊臺(강희기 이후)": kx_tai, 
+          "변외카룬(강희말기)": kx_tulergi, 
+          "변내/변외카룬(옹정초기)": karun_yz_bundle, 
+          "변내/변외카룬(건륭중기)": karun_ql_bundle,
+          "변내/변외카룬(가경 9년)": karun_jq_bundle, 
+          "성경위장 카룬(가경 23년)": jq_weichang, 
+          "변내/변외카룬(도광 27년)": karun_dg_bundle },
+        "참고자료_CHGIS (1820)": { 
+          "省 경계선(1820_CHGIS)": chgisprov_pgn, 
+          "府 경계선(1820_CHGIS)": chgispref_pgn, 
+          "府 치소(1820_CHGIS)": chgispref_pts, 
+          "지명(1820_CHGIS)": chgistwn_pts}
       };
 
 L.control.groupedLayers(baseLayers, groupedOverlays, {
