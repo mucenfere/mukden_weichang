@@ -431,15 +431,15 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
       );
       giyamun_pt.addTo(map)
       
-      const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
-      const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade_gate_kxyz.geojson',
+      const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
+      const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_kxyz.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       wpkangxi_bundle.addTo(map)
       
-      const wpqianlong = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade-qianlong.geojson', { style: willowpalisade });
-      const wp_gate_ql_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade_gate_ql.geojson',
+      const wpqianlong = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-qianlong.geojson', { style: willowpalisade });
+      const wp_gate_ql_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_ql.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
