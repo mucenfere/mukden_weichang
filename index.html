@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mukden's Karun map</title>
+  <title>Map of Mukden's Hunting Ground</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -39,6 +39,18 @@
   border: 0; 
   box-shadow: none; 
 }
+    
+    /* 삼각형 라벨 */
+    .tri {
+  width: 14px;
+  height: 14px;
+  background: var(--tri, #d62728);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border: 1px solid rgba(0,0,0,0.75);
+  box-sizing: border-box;
+  filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
+}
+    
 #map{
   width: 100%;
   height: calc(100% - 44px);
@@ -236,7 +248,12 @@ async function loadGeoJSON(url, options = {}) {
           className: 'plain-label'
         });
       }
-(async () => {
+
+      layer.on('click', () => openInfoPanel(labelText, p));
+    }
+  });
+}
+    (async () => {
 
       //카룬
 async function fetchGeoJSON(url){
@@ -345,42 +362,98 @@ function makeKarunLayer(gj, { time, ztype, color }) {
     pointToLayer: (f, latlng) => L.marker(latlng, { icon })
   });
       
-    // 성경장군 경계선
-    const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
+// 카룬 아이콘 색깔
+const dk_KX = '#00A2FF'; // 밝은 스카이블루
+const tk_KX = '#FFD400'; // 밝은 옐로(블루 보색)
+
+const dk_YZ = '#B000FF'; // 선명 퍼플
+const tk_YZ = '#7CFF00'; // 라임 그린(퍼플 보색)
+
+const dk_QL = '#00E676'; // 밝은 그린(민트 계열)
+const tk_QL = '#FF4DFF'; // 밝은 마젠타(그린 보색)
+
+const dk_JQ = '#FF8C00'; // 밝은 오렌지(빨강 아님)
+const tk_JQ = '#00E5FF'; // 밝은 시안(오렌지 대비)
+      
+const JQWC  = '#005CFF'; // 코발트 블루(시안/오렌지와 구분, 위성에서 강함)
+
+const dk_DG = '#6A00FF'; // 진한 바이올렛(퍼플 계열이지만 YZ보다 더 푸른 톤)
+const tk_DG = '#00FFC8'; // 밝은 민트/아쿠아(바이올렛과 대비, 노랑과 겹침 없음)
+
+// 변대(tai)
+const kx_tai = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai', color: dk_KX });
+kx_tai.addTo(map)
+      
+// 강희: 변대(tai) + 변외(tulergi)
+const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
+kx_tulergi.addTo(map)
+      
+// 옹정: 변내(dorgi) + 변외(tulergi)
+const yz_dorgi   = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'dorgi',   color: dk_YZ });
+const yz_tulergi = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'tulergi', color: tk_YZ });
+const karun_yz_bundle = L.layerGroup([yz_dorgi, yz_tulergi]);
+
+// 건륭
+const ql_dorgi   = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'dorgi',   color: dk_QL });
+const ql_tulergi = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'tulergi', color: tk_QL });
+const karun_ql_bundle = L.layerGroup([ql_dorgi, ql_tulergi]);
+
+// 가경
+const jq_dorgi   = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'dorgi',   color: dk_JQ });
+const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulergi', color: tk_JQ });
+const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
+
+// 가경위장
+const jq_weichang   = makeKarunLayer(karunAll, { time: '가경23년', ztype: 'aba',   color: JQWC });
+
+// 도광
+const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
+const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
+const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
+      
+// 성경장군 경계선
+const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
       admin_v1.addTo(map);
-    const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {label: true,
-    pointToLayer: (feature, latlng) => {
+const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
+  label: true,
+  pointToLayer: (feature, latlng) => {
     const marker = L.marker(latlng, { icon: icon_admin });
     oms.addMarker(marker);                                
     return marker;
-    }
-  });
+  }
+});
       admin_pts.addTo(map);
-     
-      //역참
+ 
       const giyamun_pt = await loadGeoJSON('./data/manchu_giyamun_pt.geojson',
       mkIconPt(icon_giyamun, { label: true })
       );
       giyamun_pt.addTo(map)
+      
       const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: willowpalisade });
       const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       wpkangxi_bundle.addTo(map)
+      
       const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
       const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
-
-      // 우측 레이어
+      
       const groupedOverlays = {
         "기본지리정보": { "성경장군 관할 경계선": admin_v1, "행정 지명(lv1/lv2)": admin_pts, "역참": giyamun_pt },
         "유조변": { "유조변(강희-옹정)": wpkangxi_bundle, "유조변(건륭이후)": wpqianlong_bundle },
-        "성경위장": { "성경위장": wc_whole, "演武圍": we_yw, "王多羅樹圍": wc_wdlxw, "鮮圍": wc_xw},
+        "邊臺": { "邊臺(강희기 이후)": kx_tai },
+        "강희기 카룬": { "변외카룬(강희말기)": kx_tulergi },
+        "옹정기 카룬": { "변내/변외카룬(옹정초기)": karun_yz_bundle },
+        "건륭기 카룬": { "변내/변외카룬(건륭중기)": karun_ql_bundle },
+        "가경기 카룬": { "변내/변외카룬(가경 9년)": karun_jq_bundle },
+        "가경기 위장카룬": { "성경위장 카룬(가경 23년)": jq_weichang },
+        "도광기 카룬": { "변내/변외카룬(도광 27년)": karun_dg_bundle },
         "참고자료_CHGIS (1820)": { "省 경계선(1820_CHGIS)": chgisprov_pgn, "府 경계선(1820_CHGIS)": chgispref_pgn, "府 치소(1820_CHGIS)": chgispref_pts, "지명(1820_CHGIS)": chgistwn_pts}
       };
 
@@ -397,7 +470,3 @@ L.control.groupedLayers(baseLayers, groupedOverlays, {
   </script>
 </body>
 </html>
-      layer.on('click', () => openInfoPanel(labelText, p));
-    }
-  });
-}
