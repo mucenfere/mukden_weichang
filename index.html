@@ -261,18 +261,18 @@ async function fetchGeoJSON(url){
      if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
      return await res.json();
      }
-    const karunAll = await fetchGeoJSON('./data/karun_all.geojson');
+    const karunAll = await fetchGeoJSON('https://mucenfere.github.io/mukden_karun/data/karun_all.geojson');
       
       // 국경선 백색 라인
-      const bordersWhite = await loadGeoJSON('./data/borders.geojson', {
+      const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
           style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
        });
       const bordersLayer = L.layerGroup([bordersWhite]).addTo(map);
       
       // CHGIS
-      const chgisprov_pgn = await loadGeoJSON('./data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
-      const chgispref_pgn = await loadGeoJSON('./data/v6_1820_pref_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
-      const chgispref_pts = await loadGeoJSON('./data/v6_1820_pref_pts.geojson', { 
+      const chgisprov_pgn = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
+      const chgispref_pgn = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_pref_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
+      const chgispref_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_pref_pts.geojson', { 
                 label: true,
         pointToLayer: (f, latlng) => L.circleMarker(latlng, {
           radius: 2,
@@ -282,7 +282,7 @@ async function fetchGeoJSON(url){
           fillOpacity: 1
         })
       });
-        const chgistwn_pts = await loadGeoJSON('./data/v6_1820_twn_pts.geojson', {
+        const chgistwn_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_twn_pts.geojson', {
         label: true,
         pointToLayer: (f, latlng) => L.circleMarker(latlng, {
           radius: 2,
@@ -296,13 +296,13 @@ async function fetchGeoJSON(url){
       //icon
 
 const icon_wp_gate = L.icon({
-  iconUrl: './data/img/willowgateicon.png',
+  iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/willowgateicon.png',
   iconSize: [10, 10],
   iconAnchor: [9, 9],
   popupAnchor: [0, -9]
 });
 const icon_giyamun = L.icon({
-  iconUrl: './data/img/giyamunicon.png',
+  iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/giyamunicon.png',
   iconSize: [10, 10],
   iconAnchor: [9, 9],
   popupAnchor: [0, -9]
@@ -412,11 +412,11 @@ const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tuler
 const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
       
 // 성경장군 경계선
-const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
+const admin_v1 = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
       admin_v1.addTo(map);
-const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
+const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_admin_pt.geojson', {
   label: true,
   pointToLayer: (feature, latlng) => {
     const marker = L.marker(latlng, { icon: icon_admin });
@@ -426,20 +426,20 @@ const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
 });
       admin_pts.addTo(map);
  
-      const giyamun_pt = await loadGeoJSON('./data/manchu_giyamun_pt.geojson',
+      const giyamun_pt = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_giyamun_pt.geojson',
       mkIconPt(icon_giyamun, { label: true })
       );
       giyamun_pt.addTo(map)
       
-      const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: willowpalisade });
-      const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson',
+      const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
+      const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade_gate_kxyz.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       wpkangxi_bundle.addTo(map)
       
-      const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
-      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',
+      const wpqianlong = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade-qianlong.geojson', { style: willowpalisade });
+      const wp_gate_ql_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/data/willowpalisade_gate_ql.geojson',
       mkIconPt(icon_wp_gate, { label: false })
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
