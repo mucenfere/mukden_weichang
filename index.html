@@ -1,1 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mukden's Karun map</title>
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
+
+  <link rel="stylesheet" href="./css/site.css" />
+
+  <style>
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+
+    /* Top nav */
+    .topnav{
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      padding: 0 80px;
+      background: rgba(255,255,255,0.95);
+      z-index: 1000;
+      border-bottom: 1px solid #ddd;
+    }
+    .topnav a{ text-decoration:none; color:#111; font-weight:600; }
+
+/* lv1, lv2: 아이콘 */
+.admin-dot{
+  width: 6px; height: 6px; 
+  border-radius: 50%;
+  background: #004eff; 
+  border: 0; 
+  box-shadow: none; 
+}
+#map{
+  width: 100%;
+  height: calc(100% - 44px);
+  margin-top: 44px;
+}
+
+    /* Tooltip labels */
+    .leaflet-tooltip.plain-label{
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      color: #000;
+      font-size: 13px;
+      font-weight: 600;
+      text-shadow: 0 0 2px #fff, 0 0 2px #fff;
+    }
+    .leaflet-tooltip.plain-label:before{ display: none !important; }
+
+    /* Make layers control scroll internally (not whole page) */
+    .leaflet-control-layers{
+      max-height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+    .leaflet-control-layers-overlays{
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 6px;
+    }
+.leaflet-control-layers-group-name{
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin-top: 10px;
+  margin-bottom: 6px; 
+}
+    
+.info-panel{
+  position: fixed;
+  top: 44px;
+  left: 0;        
+  right: auto;    
+  width: 360px;
+  height: calc(100vh - 44px);
+  background: rgba(255,255,255,0.98);
+  border-right: 1px solid #ddd; 
+  border-left: none;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 6px 0 20px rgba(0,0,0,0.08); 
+}
+
+.info-panel.hidden{ display:none; }
+
+.info-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+.info-title{ font-weight: 800; }
+.info-close{
+  font-size: 22px;
+  line-height: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.info-body{
+  padding: 10px 12px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.info-body table{ width:100%; border-collapse: collapse; }
+.info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
+.info-body td{ padding:4px 0; word-break: break-word; }
+     
+  </style>
+</head>
+
+<body>
+  <nav class="topnav">
+    <a href="https://mucenfere.github.io/">Home</a>
+    <a href="./index.html">Map</a>
+    <a href="./gazetteer.html">Gazetteer</a>
+    <a href="./reference.html">Reference</a>
+    <a href="./lop.html">Work Log</a>
+  </nav>
+
+  <div id="map"></div>
+  <div id="infoPanel" class="info-panel hidden">
+  <div class="info-head">
+    <div id="infoTitle" class="info-title">정보</div>
+    <button id="infoClose" class="info-close" type="button">×</button>
+  </div>
+  <div id="infoBody" class="info-body"></div>
+</div>
+
+  <script>
+    const map = L.map('map').setView([42, 126], 7);
+    const mkDivIcon = (className, size) => L.divIcon({
+  className: '',
+  html: `<div class="${className}"></div>`,
+  iconSize: [size, size],
+  iconAnchor: [size/2, size/2],
+  popupAnchor: [0, -size/2]
+});
+const oms = new OverlappingMarkerSpiderfier(map, {
+  keepSpiderfied: true,  
+  nearbyDistance: 20,    
+  legWeight: 1.2
+});
+    
+    
+const icon_admin = mkDivIcon('admin-dot', 10);
+    
+const panel = document.getElementById('infoPanel');
+L.DomEvent.disableClickPropagation(panel);
+L.DomEvent.disableScrollPropagation(panel);
+const infoTitleEl = document.getElementById('infoTitle');
+const infoBodyEl  = document.getElementById('infoBody');
+const infoCloseEl = document.getElementById('infoClose');
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, (m)=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[m]));
+}
+
+function openInfoPanel(title, props){
+  infoTitleEl.textContent = title || '정보';
+
+  const rows = Object.entries(props || {})
+    .map(([k,v]) => `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`)
+    .join('');
+
+  infoBodyEl.innerHTML = `<table>${rows}</table>`;
+
+  panel.classList.remove('hidden');
+}
+function closeInfoPanel(){
+  panel.classList.add('hidden');
+}
+    if (infoCloseEl) infoCloseEl.addEventListener('click', closeInfoPanel);
+    
+    // Basemaps
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    });
+
+    const satellite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19, attribution: '&copy; Esri' }
+    );
+
+    const labels = L.tileLayer(
+      'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19, attribution: '&copy; Esri', opacity: 0.5 }
+    );
+
+    satellite.addTo(map);
+      const baseLayers = {
+        "위성": satellite, 
+        "OSM": osm
+      };
+
+    // Styles
+    const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
+
+async function loadGeoJSON(url, options = {}) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+  const gj = await res.json();
+
+  return L.geoJSON(gj, {
+    style: options.style,
+    pointToLayer: options.pointToLayer,
+    onEachFeature: (feature, layer) => {
+      const p = feature.properties || {};
+      const labelText = p.name_chf || p.name || p.NAME_FT || '정보';
+
+      if (options.label === true) {
+        layer.bindTooltip(labelText, {
+          permanent: true,
+          direction: 'top',
+          offset: [0, -6],
+          opacity: 1,
+          className: 'plain-label'
+        });
+      }
+
+      layer.on('click', () => openInfoPanel(labelText, p));
+    }
+  });
+}
