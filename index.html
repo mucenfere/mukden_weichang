@@ -254,7 +254,35 @@ async function loadGeoJSON(url, options = {}) {
   });
 }
     (async () => {
+      
+      // 위장_폴리곤
+      const wc_pg_all = await loadGeoJSON('./data/mukden_weichang_pg.geojson', (gj) =>
+        L.geoJSON(gj, {
+          style: {
+            color: '#ff7a00',
+            weight: 2,
+            opacity: 0.9,
+            fillOpacity: 0.08
+          },
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            const name = p.name_chf || p.name || p.NAME_FT || '정보';
+            layer.bindPopup(`<b>${name}</b>`);
+          }
+        })
+      );
 
+      // 위장_포인트
+      const wc_pt = await loadGeoJSON('./data/mukden_weichang_pt.geojson', {
+       label: true,
+      pointToLayer: (feature, latlng) => {
+    const marker = L.marker(latlng, { icon: icon_admin });
+    oms.addMarker(marker);                                
+    return marker;
+  }
+});
+      wc_pt.addTo(map);
+      
       //카룬
 async function fetchGeoJSON(url){
      const res = await fetch(url);
@@ -448,6 +476,8 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
           "역참": giyamun_pt, 
           "유조변(강희-옹정)": wpkangxi_bundle, 
           "유조변(건륭이후)": wpqianlong_bundle },
+        "성경위장": { "성경위장": wc_pg_all, "演武圍": wc_pg_yww, "王多羅樹圍: wc_pg_wdlxw", "鮮圍": wc_pg_xw, "御圍": wc_pt_yw }
+        "성경위장 105小圍": { "성경위장": wc_pt }  
         "성경카룬": { 
           "邊臺(강희기 이후)": kx_tai, 
           "변외카룬(강희말기)": kx_tulergi, 
