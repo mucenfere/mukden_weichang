@@ -430,6 +430,8 @@ layer.on('click', (e) => {
 const TYPE_NAMES = ['王多羅樹圍', '演武圍', '鮮圍'];
 
 const wcTypeLayers = {};
+      wcTypeLayers.addTo(map)
+      
 for (const name of TYPE_NAMES) {
   const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
