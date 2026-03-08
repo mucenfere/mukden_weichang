@@ -430,8 +430,6 @@ layer.on('click', (e) => {
 const TYPE_NAMES = ['王多羅樹圍', '演武圍', '鮮圍'];
 
 const wcTypeLayers = {};
-      wcTypeLayers.addTo(map)
-      
 for (const name of TYPE_NAMES) {
   const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
@@ -448,6 +446,9 @@ wcTypeLayers['盛京圍場'] = makeWcLayer(
   }
 );
 wcTypeLayers['盛京圍場'].addTo(map);
+wcTypeLayers['王多羅樹圍'].addTo(map);
+wcTypeLayers['演武圍'].addTo(map);
+wcTypeLayers['鮮圍'].addTo(map);
       
 // ── 카룬별 분류 ──
 const KARUN_NAMES = [
