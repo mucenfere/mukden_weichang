@@ -177,6 +177,11 @@
 
   <script>
     const map = L.map('map').setView([42.6, 125.2], 9);
+    map.on('click', () => {
+    highlightLayer(null);
+    closeInfoPanel();
+    });
+    
     const mkDivIcon = (className, size) => L.divIcon({
   className: '',
   html: `<div class="${className}"></div>`,
@@ -206,6 +211,36 @@ function escapeHtml(s){
   }[m]));
 }
 
+// 선택 강조 관리
+let selectedLayer = null;
+let selectedOriginalStyle = null;
+
+function highlightLayer(layer) {
+  if (selectedLayer) {
+    if (selectedOriginalStyle) {
+      selectedLayer.setStyle(selectedOriginalStyle);
+    }
+    selectedLayer = null;
+    selectedOriginalStyle = null;
+  }
+  if (!layer) return;
+  if (typeof layer.setStyle !== 'function') return;
+  selectedOriginalStyle = {
+    color: layer.options.color,
+    weight: layer.options.weight,
+    opacity: layer.options.opacity,
+    fillOpacity: layer.options.fillOpacity,
+  };
+  selectedLayer = layer;
+  layer.setStyle({
+    color: '#ffff00',
+    weight: 4,
+    opacity: 1,
+    fillOpacity: 0.4,
+  });
+  layer.bringToFront();
+}
+    
 function openInfoPanel(title, props){
   infoTitleEl.textContent = title || '정보';
 
@@ -269,7 +304,10 @@ async function loadGeoJSON(url, options = {}) {
         });
       }
 
-      layer.on('click', () => openInfoPanel(labelText, p));
+layer.on('click', () => {
+  highlightLayer(layer);
+  openInfoPanel(labelText, p);
+});
     }
   });
 }
@@ -325,7 +363,10 @@ function makeWcLayer(features, color, styleOverride = {}) {
       onEachFeature: (feature, layer) => {
         const p = feature.properties || {};
         const label = p.name_chf || '정보';
-        layer.on('click', () => openInfoPanel(label, p));
+layer.on('click', () => {
+  highlightLayer(layer);
+  openInfoPanel(label, p);
+});
       },
     }
   );
@@ -466,7 +507,10 @@ function makeKarunLayer(gj, { time, ztype, color }) {
       });
 
       if (typeof openInfoPanel === 'function') {
-        layer.on('click', () => openInfoPanel(labelText, p));
+layer.on('click', () => {
+  highlightLayer(layer);
+  openInfoPanel(labelText, p);
+});
       }
     }
   });
