@@ -508,7 +508,7 @@ const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
 const admin_v1 = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
-      admin_v1.addTo(map);
+
 const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_admin_pt.geojson', {
   label: true,
   pointToLayer: (feature, latlng) => {
