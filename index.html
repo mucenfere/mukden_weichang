@@ -255,16 +255,86 @@ async function loadGeoJSON(url, options = {}) {
 }
     (async () => {
       
-      // 위장_폴리곤
-const wc_pg_all = await loadGeoJSON('./data/mukden_weichang_pg.geojson', {
-  style: {
-    color: '#ff7a00',
-    weight: 2,
-    opacity: 0.9,
-    fillOpacity: 0.08
-  },
-});
-wc_pg_all.addTo(map);
+// ── 성경위장 폴리곤: 유형별 + 카룬별 레이어 ──────────────────────────
+// 색상 팔레트
+const WC_TYPE_COLORS = {
+  'Wang多羅樹圍': '#e41a1c',
+  '王多羅樹圍':   '#e41a1c',
+  '盛京圍場':     '#ff7f00',
+  '演武圍':       '#4daf4a',
+  '鮮圍':         '#984ea3',
+};
+
+const WC_KARUN_COLORS = {
+  '臺必拉卡倫':   '#1b9e77',
+  '西巴拉河卡倫': '#d95f02',
+  '大荒溝卡倫':   '#7570b3',
+  '蒙古霍羅卡倫': '#e7298a',
+  '雙榆樹卡倫':   '#66a61e',
+  '孤山河卡倫':   '#e6ab02',
+  '歸勒哈卡倫':   '#a6761d',
+  '克爾蘇卡倫':   '#666666',
+  '那丹伯卡倫':   '#1f78b4',
+  '大沙河卡倫':   '#b2df8a',
+  '梅河卡倫':     '#fb9a99',
+  '土口子卡倫':   '#cab2d6',
+};
+
+//카룬
+async function fetchGeoJSON(url){
+     const res = await fetch(url);
+     if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+     return await res.json();
+     }
+    const karunAll = await fetchGeoJSON('https://mucenfere.github.io/mukden_karun/data/karun_all.geojson');
+      
+// GeoJSON을 직접 fetch해서 feature별로 분류
+const wcPgGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pg.geojson');
+
+// 공통 레이어 생성 함수
+function makeWcLayer(features, color) {
+  return L.geoJSON(
+    { type: 'FeatureCollection', features },
+    {
+      style: {
+        color,
+        weight: 2,
+        opacity: 0.9,
+        fillColor: color,
+        fillOpacity: 0.15,
+      },
+      onEachFeature: (feature, layer) => {
+        const p = feature.properties || {};
+        const label = p.name_chf || '정보';
+        layer.on('click', () => openInfoPanel(label, p));
+      },
+    }
+  );
+}
+
+// ── 유형별 분류 ──
+const TYPE_NAMES = ['王多羅樹圍', '盛京圍場', '演武圍', '鮮圍'];
+
+const wcTypeLayers = {};
+for (const name of TYPE_NAMES) {
+  const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
+  const color = WC_TYPE_COLORS[name] || '#ff7a00';
+  wcTypeLayers[name] = makeWcLayer(features, color);
+}
+
+// ── 카룬별 분류 ──
+const KARUN_NAMES = [
+  '臺必拉卡倫', '西巴拉河卡倫', '大荒溝卡倫', '蒙古霍羅卡倫',
+  '雙榆樹卡倫', '孤山河卡倫', '歸勒哈卡倫', '克爾蘇卡倫',
+  '那丹伯卡倫', '大沙河卡倫', '梅河卡倫', '土口子卡倫',
+];
+
+const wcKarunLayers = {};
+for (const name of KARUN_NAMES) {
+  const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
+  const color = WC_KARUN_COLORS[name] || '#aaaaaa';
+  wcKarunLayers[name] = makeWcLayer(features, color);
+}
       
       // 위장_포인트
       const wc_pt = await loadGeoJSON('./data/mukden_weichang_pt.geojson', {
@@ -276,14 +346,6 @@ wc_pg_all.addTo(map);
   }
 });
       wc_pt.addTo(map);
-      
-      //카룬
-async function fetchGeoJSON(url){
-     const res = await fetch(url);
-     if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
-     return await res.json();
-     }
-    const karunAll = await fetchGeoJSON('https://mucenfere.github.io/mukden_karun/data/karun_all.geojson');
       
       // 국경선 백색 라인
       const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
@@ -464,29 +526,55 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
       wpqianlong_bundle.addTo(map)
       
       const groupedOverlays = {
-        "기본지리정보": { 
-          "성경장군 관할 경계선": admin_v1, 
-          "행정 지명(lv1/lv2)": admin_pts, 
-          "역참": giyamun_pt, 
-          "유조변(강희-옹정)": wpkangxi_bundle, 
-          "유조변(건륭이후)": wpqianlong_bundle },
-        "성경위장": { "성경위장": wc_pg_all }, 
-        "성경위장 105小圍": { "성경위장": wc_pt },   
-        "성경위장카룬": { "성경위장카룬": jq_weichang },   
-        "성경 변내/변외카룬": { 
-          "邊臺(강희기 이후)": kx_tai, 
-          "변외카룬(강희말기)": kx_tulergi, 
-          "변내/변외카룬(옹정초기)": karun_yz_bundle, 
-          "변내/변외카룬(건륭중기)": karun_ql_bundle,
-          "변내/변외카룬(가경 9년)": karun_jq_bundle, 
-          "변내/변외카룬(도광 27년)": karun_dg_bundle },
-        "참고자료_CHGIS (1820)": { 
-          "省 경계선(1820_CHGIS)": chgisprov_pgn, 
-          "府 경계선(1820_CHGIS)": chgispref_pgn, 
-          "府 치소(1820_CHGIS)": chgispref_pts, 
-          "지명(1820_CHGIS)": chgistwn_pts}
-      };
+  "기본지리정보": {
+    "성경장군 관할 경계선": admin_v1,
+    "행정 지명(lv1/lv2)": admin_pts,
+    "역참": giyamun_pt,
+    "유조변(강희-옹정)": wpkangxi_bundle,
+    "유조변(건륭이후)": wpqianlong_bundle
+  },
 
+  // ★ 유형별
+  "성경위장 小圍 유형": {
+    "王多羅樹圍": wcTypeLayers['王多羅樹圍'],
+    "盛京圍場":   wcTypeLayers['盛京圍場'],
+    "演武圍":     wcTypeLayers['演武圍'],
+    "鮮圍":       wcTypeLayers['鮮圍'],
+  },
+
+  // ★ 카룬 관할별
+  "성경위장 관할 카룬": {
+    "臺必拉卡倫":   wcKarunLayers['臺必拉卡倫'],
+    "西巴拉河卡倫": wcKarunLayers['西巴拉河卡倫'],
+    "大荒溝卡倫":   wcKarunLayers['大荒溝卡倫'],
+    "蒙古霍羅卡倫": wcKarunLayers['蒙古霍羅卡倫'],
+    "雙榆樹卡倫":   wcKarunLayers['雙榆樹卡倫'],
+    "孤山河卡倫":   wcKarunLayers['孤山河卡倫'],
+    "歸勒哈卡倫":   wcKarunLayers['歸勒哈卡倫'],
+    "克爾蘇卡倫":   wcKarunLayers['克爾蘇卡倫'],
+    "那丹伯卡倫":   wcKarunLayers['那丹伯卡倫'],
+    "大沙河卡倫":   wcKarunLayers['大沙河卡倫'],
+    "梅河卡倫":     wcKarunLayers['梅河卡倫'],
+    "土口子卡倫":   wcKarunLayers['土口子卡倫'],
+  },
+
+  "성경위장 105小圍": { "성경위장": wc_pt },
+  "성경위장카룬":     { "성경위장카룬": jq_weichang },
+  "성경 변내/변외카룬": {
+    "邊臺(강희기 이후)":         kx_tai,
+    "변외카룬(강희말기)":        kx_tulergi,
+    "변내/변외카룬(옹정초기)":   karun_yz_bundle,
+    "변내/변외카룬(건륭중기)":   karun_ql_bundle,
+    "변내/변외카룬(가경 9년)":   karun_jq_bundle,
+    "변내/변외카룬(도광 27년)":  karun_dg_bundle,
+  },
+  "참고자료_CHGIS (1820)": {
+    "省 경계선(1820_CHGIS)": chgisprov_pgn,
+    "府 경계선(1820_CHGIS)": chgispref_pgn,
+    "府 치소(1820_CHGIS)":   chgispref_pts,
+    "지명(1820_CHGIS)":      chgistwn_pts,
+  },
+};
 L.control.groupedLayers(baseLayers, groupedOverlays, {
   collapsed: false,
   groupsCollapsible: false,
