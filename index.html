@@ -258,7 +258,6 @@ async function loadGeoJSON(url, options = {}) {
 // ── 성경위장 폴리곤: 유형별 + 카룬별 레이어 ──────────────────────────
 // 색상 팔레트
 const WC_TYPE_COLORS = {
-  'Wang多羅樹圍': '#e41a1c',
   '王多羅樹圍':   '#e41a1c',
   '盛京圍場':     '#ff7f00',
   '演武圍':       '#4daf4a',
@@ -313,7 +312,7 @@ function makeWcLayer(features, color) {
 }
 
 // ── 유형별 분류 ──
-const TYPE_NAMES = ['王多羅樹圍', '盛京圍場', '演武圍', '鮮圍'];
+const TYPE_NAMES = ['盛京圍場', '王多羅樹圍', '演武圍', '鮮圍'];
 
 const wcTypeLayers = {};
 for (const name of TYPE_NAMES) {
@@ -321,7 +320,9 @@ for (const name of TYPE_NAMES) {
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
   wcTypeLayers[name] = makeWcLayer(features, color);
 }
-
+      
+wcTypeLayers['盛京圍場'].addTo(map);
+      
 // ── 카룬별 분류 ──
 const KARUN_NAMES = [
   '臺必拉卡倫', '西巴拉河卡倫', '大荒溝卡倫', '蒙古霍羅卡倫',
@@ -336,7 +337,7 @@ for (const name of KARUN_NAMES) {
   wcKarunLayers[name] = makeWcLayer(features, color);
 }
       
-      // 위장_포인트
+// 위장_포인트
       const wc_pt = await loadGeoJSON('./data/mukden_weichang_pt.geojson', {
        label: true,
       pointToLayer: (feature, latlng) => {
@@ -537,7 +538,6 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
   // ★ 유형별
   "성경위장 小圍 유형": {
     "王多羅樹圍": wcTypeLayers['王多羅樹圍'],
-    "盛京圍場":   wcTypeLayers['盛京圍場'],
     "演武圍":     wcTypeLayers['演武圍'],
     "鮮圍":       wcTypeLayers['鮮圍'],
   },
