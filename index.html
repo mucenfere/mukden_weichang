@@ -70,7 +70,20 @@
       text-shadow: 0 0 2px #fff, 0 0 2px #fff;
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
-
+    
+.leaflet-tooltip.center-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: #00ffff;
+  font-size: 15px;
+  font-weight: 800;
+  text-shadow: 0 0 4px #000, 0 0 4px #000, 0 0 8px #000;
+}
+.leaflet-tooltip.center-label:before { display: none !important; }
+    
 /* Make layers control scroll internally (not whole page) */
 .leaflet-control-layers{
       max-height: calc(100vh - 60px);
@@ -298,7 +311,7 @@ function highlightLayer(layer) {
     const center = layer.getBounds().getCenter();
     const labelText = layer.feature?.properties?.name_chf || '';
     if (labelText) {
-      layer._centerLabel = L.tooltip({ permanent: true, direction: 'center', className: 'plain-label' })
+      layer._centerLabel = L.tooltip({ permanent: true, direction: 'center', className: 'center-label' })
         .setContent(labelText)
         .setLatLng(center)
         .addTo(map);
