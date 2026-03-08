@@ -358,8 +358,8 @@ async function loadGeoJSON(url, options = {}) {
 
 layer.on('click', (e) => {
   L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p);  // 또는 label, p
+  if (label !== '盛京圍場') highlightLayer(layer);
+  openInfoPanel(label, p);
 });
     }
   });
