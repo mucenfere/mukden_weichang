@@ -177,10 +177,11 @@
 
   <script>
     const map = L.map('map').setView([42.6, 125.2], 9);
-    map.on('click', () => {
-    highlightLayer(null);
-    closeInfoPanel();
-    });
+    map.on('click', (e) => {
+  if (e.originalEvent._stopped) return;
+  highlightLayer(null);
+  closeInfoPanel();
+});
     
     const mkDivIcon = (className, size) => L.divIcon({
   className: '',
@@ -233,11 +234,11 @@ function highlightLayer(layer) {
   };
   selectedLayer = layer;
   layer.setStyle({
-    color: '#ffff00',
-    weight: 4,
-    opacity: 1,
-    fillOpacity: 0.4,
-  });
+  color: '#00ffff', 
+  weight: 5,
+  opacity: 1,
+  fillOpacity: 0.5,
+});
   layer.bringToFront();
 }
     
@@ -304,9 +305,10 @@ async function loadGeoJSON(url, options = {}) {
         });
       }
 
-layer.on('click', () => {
+layer.on('click', (e) => {
+  L.DomEvent.stopPropagation(e);
   highlightLayer(layer);
-  openInfoPanel(labelText, p);
+  openInfoPanel(labelText, p);  // 또는 label, p
 });
     }
   });
@@ -363,9 +365,10 @@ function makeWcLayer(features, color, styleOverride = {}) {
       onEachFeature: (feature, layer) => {
         const p = feature.properties || {};
         const label = p.name_chf || '정보';
-layer.on('click', () => {
+layer.on('click', (e) => {
+  L.DomEvent.stopPropagation(e);
   highlightLayer(layer);
-  openInfoPanel(label, p);
+  openInfoPanel(label, p);  // 또는 label, p
 });
       },
     }
@@ -507,9 +510,10 @@ function makeKarunLayer(gj, { time, ztype, color }) {
       });
 
       if (typeof openInfoPanel === 'function') {
-layer.on('click', () => {
+layer.on('click', (e) => {
+  L.DomEvent.stopPropagation(e);
   highlightLayer(layer);
-  openInfoPanel(labelText, p);
+  openInfoPanel(labelText, p);  // 또는 label, p
 });
       }
     }
