@@ -245,6 +245,10 @@ function highlightLayer(layer) {
       selectedLayer.setStyle(selectedOriginalStyle);
       selectedOriginalStyle = null;
     }
+    if (selectedLayer._centerLabel) {
+      selectedLayer._centerLabel.remove();
+      selectedLayer._centerLabel = null;
+    }
     if (selectedLayer._selectedEl) {
       selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
       selectedLayer._selectedEl = null;
@@ -255,7 +259,7 @@ function highlightLayer(layer) {
   if (!layer) return;
   selectedLayer = layer;
 
-  // L.Marker (포인트 - div 아이콘 또는 PNG 아이콘)
+  // L.Marker
   if (layer instanceof L.Marker) {
     const el = layer.getElement();
     if (!el) return;
@@ -266,7 +270,7 @@ function highlightLayer(layer) {
     return;
   }
 
-  // L.CircleMarker (CHGIS 포인트)
+  // L.CircleMarker
   if (layer instanceof L.CircleMarker) {
     selectedOriginalStyle = {
       color: layer.options.color,
@@ -290,6 +294,15 @@ function highlightLayer(layer) {
     };
     layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.5 });
     layer.bringToFront();
+
+    const center = layer.getBounds().getCenter();
+    const labelText = layer.feature?.properties?.name_chf || '';
+    if (labelText) {
+      layer._centerLabel = L.tooltip({ permanent: true, direction: 'center', className: 'plain-label' })
+        .setContent(labelText)
+        .setLatLng(center)
+        .addTo(map);
+    }
   }
 }
     
