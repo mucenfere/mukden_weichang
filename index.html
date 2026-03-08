@@ -291,7 +291,7 @@ async function fetchGeoJSON(url){
 const wcPgGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pg.geojson');
 
 // 공통 레이어 생성 함수
-function makeWcLayer(features, color) {
+function makeWcLayer(features, color, styleOverride = {}) {
   return L.geoJSON(
     { type: 'FeatureCollection', features },
     {
@@ -301,6 +301,7 @@ function makeWcLayer(features, color) {
         opacity: 0.9,
         fillColor: color,
         fillOpacity: 0.15,
+        ...styleOverride,   // ← 오버라이드 적용
       },
       onEachFeature: (feature, layer) => {
         const p = feature.properties || {};
@@ -312,7 +313,7 @@ function makeWcLayer(features, color) {
 }
 
 // ── 유형별 분류 ──
-const TYPE_NAMES = ['盛京圍場', '王多羅樹圍', '演武圍', '鮮圍'];
+const TYPE_NAMES = ['王多羅樹圍', '演武圍', '鮮圍'];
 
 const wcTypeLayers = {};
 for (const name of TYPE_NAMES) {
@@ -320,7 +321,17 @@ for (const name of TYPE_NAMES) {
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
   wcTypeLayers[name] = makeWcLayer(features, color);
 }
-      
+wcTypeLayers['盛京圍場'] = makeWcLayer(
+  wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
+  null,  // color 미사용
+  {      // 별도 스타일 오버라이드
+    color: '#ffffff',
+    weight: 2.5,
+    opacity: 1,
+    fillColor: '#ffffff',
+    fillOpacity: 0.12,
+  }
+);
 wcTypeLayers['盛京圍場'].addTo(map);
       
 // ── 카룬별 분류 ──
