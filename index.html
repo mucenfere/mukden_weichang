@@ -588,7 +588,7 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
 L.control.groupedLayers(baseLayers, groupedOverlays, {
   collapsed: false,
   groupsCollapsible: false,
-  groupCheckboxes: false
+  groupCheckboxes: true
 }).addTo(map);
 
     })().catch(err => {
