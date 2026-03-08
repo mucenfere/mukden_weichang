@@ -418,8 +418,8 @@ function makeWcLayer(features, color, styleOverride = {}) {
         const label = p.name_chf || '정보';
 layer.on('click', (e) => {
   L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p);
+  if (label !== '盛京圍場') highlightLayer(layer);
+  openInfoPanel(label, p);
 });
       },
     }
@@ -563,7 +563,7 @@ function makeKarunLayer(gj, { time, ztype, color }) {
 layer.on('click', (e) => {
   L.DomEvent.stopPropagation(e);
   highlightLayer(layer);
-  openInfoPanel(labelText, p);  // 또는 label, p
+  openInfoPanel(labelText, p); 
 });
       }
     }
