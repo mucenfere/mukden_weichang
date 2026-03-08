@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/polylabel@1.1.0/dist/polylabel.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
-
   <link rel="stylesheet" href="./css/site.css" />
 
   <style>
@@ -311,7 +311,11 @@ function highlightLayer(layer) {
     layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.5 });
     layer.bringToFront();
 
-    const center = layer.getBounds().getCenter();
+    /*라벨을 중심으로*/
+    const coords = layer.feature.geometry.coordinates;
+    const pole = polylabel(coords, 1.0);
+    const center = L.latLng(pole[1], pole[0]);
+    
     const labelText = layer.feature?.properties?.name_chf || '';
     if (labelText) {
       layer._centerLabel = L.tooltip({ permanent: true, direction: 'center', className: 'center-label' })
