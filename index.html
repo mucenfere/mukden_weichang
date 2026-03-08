@@ -258,8 +258,8 @@ function highlightLayer(layer) {
   if (!layer) return;
   selectedLayer = layer;
 
-  // 폴리곤/폴리라인
-  if (typeof layer.setStyle === 'function' && !layer.getElement) {
+  // 폴리곤/폴리라인: getElement가 없는 경우
+  if (typeof layer.setStyle === 'function' && typeof layer.getElement === 'undefined') {
     selectedOriginalStyle = {
       color: layer.options.color,
       weight: layer.options.weight,
@@ -273,18 +273,18 @@ function highlightLayer(layer) {
       fillOpacity: 0.5,
     });
     layer.bringToFront();
+    return;
   }
 
   // 포인트 마커
-  if (layer.getElement) {
+  if (typeof layer.getElement === 'function') {
     const el = layer.getElement();
     if (!el) return;
-    // PNG 아이콘 여부 판단: options.icon이 L.Icon이면 PNG
     const icon = layer.options?.icon;
     const isPng = icon && icon instanceof L.Icon;
     el.classList.add(isPng ? 'marker-selected-png' : 'marker-selected-div');
   }
-} 
+}
     
 function openInfoPanel(title, props){
   infoTitleEl.textContent = title || '정보';
