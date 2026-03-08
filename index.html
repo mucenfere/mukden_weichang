@@ -245,12 +245,9 @@ function highlightLayer(layer) {
       selectedLayer.setStyle(selectedOriginalStyle);
       selectedOriginalStyle = null;
     }
-    if (selectedLayer.getElement) {
-      const el = selectedLayer.getElement();
-      if (el) {
-        el.classList.remove('marker-selected-png');
-        el.classList.remove('marker-selected-div');
-      }
+    if (selectedLayer._selectedEl) {
+      selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
+      selectedLayer._selectedEl = null;
     }
     selectedLayer = null;
   }
@@ -258,31 +255,41 @@ function highlightLayer(layer) {
   if (!layer) return;
   selectedLayer = layer;
 
-  // 폴리곤/폴리라인: getElement가 없는 경우
-  if (typeof layer.setStyle === 'function' && typeof layer.getElement === 'undefined') {
+  // L.Marker (포인트 - div 아이콘 또는 PNG 아이콘)
+  if (layer instanceof L.Marker) {
+    const el = layer.getElement();
+    if (!el) return;
+    const isPng = layer.options?.icon instanceof L.Icon;
+    const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
+    el.classList.add(cls);
+    layer._selectedEl = el;
+    return;
+  }
+
+  // L.CircleMarker (CHGIS 포인트)
+  if (layer instanceof L.CircleMarker) {
+    selectedOriginalStyle = {
+      color: layer.options.color,
+      weight: layer.options.weight,
+      fillColor: layer.options.fillColor,
+      fillOpacity: layer.options.fillOpacity,
+      radius: layer.options.radius,
+    };
+    layer.setStyle({ color: '#00ffff', fillColor: '#00ffff', fillOpacity: 1, weight: 2 });
+    layer.setRadius(6);
+    return;
+  }
+
+  // L.Polyline / L.Polygon
+  if (layer instanceof L.Path) {
     selectedOriginalStyle = {
       color: layer.options.color,
       weight: layer.options.weight,
       opacity: layer.options.opacity,
       fillOpacity: layer.options.fillOpacity,
     };
-    layer.setStyle({
-      color: '#00ffff',
-      weight: 5,
-      opacity: 1,
-      fillOpacity: 0.5,
-    });
+    layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.5 });
     layer.bringToFront();
-    return;
-  }
-
-  // 포인트 마커
-  if (typeof layer.getElement === 'function') {
-    const el = layer.getElement();
-    if (!el) return;
-    const icon = layer.options?.icon;
-    const isPng = icon && icon instanceof L.Icon;
-    el.classList.add(isPng ? 'marker-selected-png' : 'marker-selected-div');
   }
 }
     
