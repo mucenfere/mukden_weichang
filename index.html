@@ -259,7 +259,7 @@ function highlightLayer(layer) {
   if (layer instanceof L.Marker) {
     const el = layer.getElement();
     if (!el) return;
-    const isPng = layer.options?.icon instanceof L.Icon;
+    const isPng = layer.options?.icon instanceof L.Icon && !(layer.options?.icon instanceof L.DivIcon);
     const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
     el.classList.add(cls);
     layer._selectedEl = el;
