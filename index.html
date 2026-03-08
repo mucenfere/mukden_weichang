@@ -82,7 +82,14 @@
       overflow-x: hidden;
       padding-right: 6px;
     }
-    
+
+/* 레이어바의 너비 조절 */
+  .leaflet-control-layers {
+  max-height: calc(100vh - 60px);
+  overflow: hidden;
+  min-width: 220px;
+}
+
 /* 그룹명 행: 들여쓰기 없음 */
 .leaflet-control-layers-group-label {
   padding-left: 0 !important;
