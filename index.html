@@ -342,13 +342,13 @@ for (const name of TYPE_NAMES) {
 }
 wcTypeLayers['盛京圍場'] = makeWcLayer(
   wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
-  null,  // color 미사용
-  {      // 별도 스타일 오버라이드
+  null,
+  {
     color: '#ffffff',
     weight: 2.5,
     opacity: 1,
     fillColor: '#ffffff',
-    fillOpacity: 0.05,
+    fillOpacity: 0,
   }
 );
 wcTypeLayers['盛京圍場'].addTo(map);
