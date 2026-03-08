@@ -153,7 +153,11 @@
 .info-body table{ width:100%; border-collapse: collapse; }
 .info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
 .info-body td{ padding:4px 0; word-break: break-word; }
-     
+
+.marker-selected {
+  filter: drop-shadow(0 0 6px #00ffff) drop-shadow(0 0 10px #00ffff) !important;
+}
+
   </style>
 </head>
 
@@ -217,29 +221,43 @@ let selectedLayer = null;
 let selectedOriginalStyle = null;
 
 function highlightLayer(layer) {
+  // 이전 선택 해제
   if (selectedLayer) {
     if (selectedOriginalStyle) {
       selectedLayer.setStyle(selectedOriginalStyle);
+      selectedOriginalStyle = null;
+    }
+    // 마커 후광 제거
+    if (selectedLayer.getElement) {
+      selectedLayer.getElement()?.classList.remove('marker-selected');
     }
     selectedLayer = null;
-    selectedOriginalStyle = null;
   }
+
   if (!layer) return;
-  if (typeof layer.setStyle !== 'function') return;
-  selectedOriginalStyle = {
-    color: layer.options.color,
-    weight: layer.options.weight,
-    opacity: layer.options.opacity,
-    fillOpacity: layer.options.fillOpacity,
-  };
   selectedLayer = layer;
-  layer.setStyle({
-  color: '#00ffff', 
-  weight: 5,
-  opacity: 1,
-  fillOpacity: 0.5,
-});
-  layer.bringToFront();
+
+  // 폴리곤/폴리라인: 스타일 변경
+  if (typeof layer.setStyle === 'function') {
+    selectedOriginalStyle = {
+      color: layer.options.color,
+      weight: layer.options.weight,
+      opacity: layer.options.opacity,
+      fillOpacity: layer.options.fillOpacity,
+    };
+    layer.setStyle({
+      color: '#00ffff',
+      weight: 5,
+      opacity: 1,
+      fillOpacity: 0.5,
+    });
+    layer.bringToFront();
+  }
+
+  // 포인트 마커: 후광 CSS 추가
+  if (layer.getElement) {
+    layer.getElement()?.classList.add('marker-selected');
+  }
 }
     
 function openInfoPanel(title, props){
