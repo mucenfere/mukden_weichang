@@ -720,6 +720,8 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
       wpqianlong_bundle.addTo(map)
+
+      const wcType_bundle = L.layerGroup([wcTypeLayers['王多羅樹圍'], wcTypeLayers['演武圍'], wcTypeLayers['鮮圍']]);
       
       const groupedOverlays = {
   "기본지리정보": {
@@ -729,16 +731,15 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
     "유조변(강희-옹정)": wpkangxi_bundle,
     "유조변(건륭이후)": wpqianlong_bundle
   },
-"105小圍(포인트)": {
+"성경위장 105小圍(포인트)": {
   "<span style='display:inline-block;width:10px;height:10px;background:#cc44ff;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>演武圍": wc_pt_演武圍,
   "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;border-radius:50%;margin-right:5px;'></span>王多羅樹圍": wc_pt_王多羅樹圍,
   "<span style='display:inline-block;width:10px;height:10px;background:#ff2222;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>鮮圍": wc_pt_鮮圍,
   "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>御圍": wc_pt_御圍,
 },
-  "小圍 유형(폴리곤)": {
-    "王多羅樹圍": wcTypeLayers['王多羅樹圍'],
-    "演武圍":     wcTypeLayers['演武圍'],
-    "鮮圍":       wcTypeLayers['鮮圍'],
+"성경위장 小圍(폴리곤)": {
+  "小圍 유형(폴리곤)": wcType_bundle,
+},
   },
   "성경위장 카룬": {
     "성경위장 12 카룬": jq_weichang,
