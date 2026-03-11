@@ -469,7 +469,7 @@ wcTypeLayers['盛京圍場'] = makeWcLayer(
   null,
   {
     color: '#ffffff',
-    weight: 2.5,
+    weight: 3,
     opacity: 1,
     fillOpacity: 0,
   }
@@ -791,7 +791,7 @@ L.control.groupedLayers(baseLayers, groupedOverlays, {
   groupsCollapsible: false,
   groupCheckboxes: true
 }).addTo(map);
-
+wcTypeLayers['盛京圍場'].bringToFront();
     })().catch(err => {
       console.error(err);
       alert(err.message || err);
