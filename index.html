@@ -744,6 +744,9 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
 
       const wcType_bundle = L.layerGroup([wcTypeLayers['王多羅樹圍'], wcTypeLayers['演武圍'], wcTypeLayers['鮮圍']]);
       wcType_bundle.addTo(map);
+
+      const wcKarun_bundle = L.layerGroup(Object.values(wcKarunLayers));
+      wcKarun_bundle.addTo(map);
       
       const groupedOverlays = {
   "기본지리정보": {
@@ -762,20 +765,10 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
 },
 
   "성경위장 카룬": {
-    "성경위장 12 카룬": jq_weichang,
-    "臺必拉卡倫":   wcKarunLayers['臺必拉卡倫'],
-    "西巴拉河卡倫": wcKarunLayers['西巴拉河卡倫'],
-    "大荒溝卡倫":   wcKarunLayers['大荒溝卡倫'],
-    "蒙古霍羅卡倫": wcKarunLayers['蒙古霍羅卡倫'],
-    "雙榆樹卡倫":   wcKarunLayers['雙榆樹卡倫'],
-    "孤山河卡倫":   wcKarunLayers['孤山河卡倫'],
-    "歸勒哈卡倫":   wcKarunLayers['歸勒哈卡倫'],
-    "克爾蘇卡倫":   wcKarunLayers['克爾蘇卡倫'],
-    "那丹伯卡倫":   wcKarunLayers['那丹伯卡倫'],
-    "大沙河卡倫":   wcKarunLayers['大沙河卡倫'],
-    "梅河卡倫":     wcKarunLayers['梅河卡倫'],
-    "土口子卡倫":   wcKarunLayers['土口子卡倫'],
-  },
+  "성경위장 12 카룬": jq_weichang,
+  "12 카룬의 관할 범위": wcKarun_bundle,
+},
+        
   "참고자료_성경 변내/변외카룬": {
     "邊臺(강희기 이후)":         kx_tai,
     "변외카룬(강희말기)":        kx_tulergi,
