@@ -310,13 +310,6 @@ function highlightLayer(layer) {
     layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.25 });
     layer.bringToFront();
     const center = layer.getBounds().getCenter();
-    const labelText = layer.feature?.properties?.name_chf || '';
-    if (labelText) {
-      layer._centerLabel = L.tooltip({ permanent: true, direction: 'center', className: 'center-label' })
-        .setContent(labelText)
-        .setLatLng(center)
-        .addTo(map);
-    }
   }
 }
     
@@ -440,15 +433,24 @@ function makeWcLayer(features, color, styleOverride = {}) {
         fillOpacity: 0.25,
         ...styleOverride,   // ← 오버라이드 적용
       },
-      onEachFeature: (feature, layer) => {
-        const p = feature.properties || {};
-        const label = p.name_chf || '정보';
-layer.on('click', (e) => {
-  L.DomEvent.stopPropagation(e);
-  if (label !== '盛京圍場') highlightLayer(layer);
-  openInfoPanel(label, p);
-});
-      },
+onEachFeature: (feature, layer) => {
+  const p = feature.properties || {};
+  const label = p.name_chf || '정보';
+  
+  if (label !== '盛京圍場') {
+    layer.bindTooltip(label, {
+      permanent: true,
+      direction: 'center',
+      className: 'center-label'
+    });
+  }
+
+  layer.on('click', (e) => {
+    L.DomEvent.stopPropagation(e);
+    if (label !== '盛京圍場') highlightLayer(layer);
+    openInfoPanel(label, p);
+  });
+},
     }
   );
 }
@@ -742,6 +744,7 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
       wpqianlong_bundle.addTo(map)
 
+      wcTypeLayers['盛京圍場'].addTo(map);
       const wcType_bundle = L.layerGroup([wcTypeLayers['王多羅樹圍'], wcTypeLayers['演武圍'], wcTypeLayers['鮮圍']]);
       wcType_bundle.addTo(map);
 
