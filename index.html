@@ -438,13 +438,13 @@ onEachFeature: (feature, layer) => {
   const p = feature.properties || {};
   const label = p.name_chf || '정보';
   
-  if (label !== '盛京圍場') {
-    layer.bindTooltip(label, {
-      permanent: true,
-      direction: 'center',
-      className: 'center-label'
-    });
-  }
+if (label !== '盛京圍場' && !styleOverride.noLabel) {
+  layer.bindTooltip(label, {
+    permanent: true,
+    direction: 'center',
+    className: 'center-label'
+  });
+}
 
   layer.on('click', (e) => {
     L.DomEvent.stopPropagation(e);
@@ -488,8 +488,8 @@ const wcKarunLayers = {};
 for (const name of KARUN_NAMES) {
   const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
   const color = WC_KARUN_COLORS[name] || '#aaaaaa';
-  wcKarunLayers[name] = makeWcLayer(features, color);
-}      
+  wcKarunLayers[name] = makeWcLayer(features, color, { noLabel: true });
+}    
       
       // 국경선 백색 라인
       const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
@@ -537,7 +537,7 @@ const icon_giyamun = L.icon({
 });   
 const icon_jq_weichang = L.icon({
   iconUrl: './data/img/tower-control.png',
-  iconSize: [32, 32],
+  iconSize: [24, 24],
   iconAnchor: [8, 8],
   popupAnchor: [0, -8]
 });
