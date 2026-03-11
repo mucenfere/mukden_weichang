@@ -489,55 +489,7 @@ for (const name of KARUN_NAMES) {
   const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
   const color = WC_KARUN_COLORS[name] || '#aaaaaa';
   wcKarunLayers[name] = makeWcLayer(features, color);
-}
-      
-// 위장_포인트
-const wcPtGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pt.geojson');
-
-// 아이콘 팩토리
-const mkCircleIcon = (color, size = 10) => L.divIcon({
-  className: '',
-  html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.6);box-sizing:border-box;"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size/2, size/2],
-});
-
-// 하위 레이어 생성 함수
-function makeWcPtLayer(gj, kind, icon) {
-  return L.geoJSON(gj, {
-    filter: f => f.properties?.['종류'] === kind,
-    pointToLayer: (f, latlng) => {
-      const marker = L.marker(latlng, { icon });
-      oms.addMarker(marker);
-      return marker;
-    },
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.name || '정보';
-      layer.bindTooltip(labelText, {
-        permanent: true, direction: 'top', offset: [0, -6],
-        opacity: 1, className: 'plain-label'
-      });
-      layer.on('click', (e) => {
-        L.DomEvent.stopPropagation(e);
-        highlightLayer(layer);
-        openInfoPanel(labelText, p);
-      });
-    }
-  });
-}
-
-const wc_pt_演武圍 = makeWcPtLayer(wcPtGeoJSON, '演武圍', mkTriIcon('#984ea3', 10));
-const wc_pt_王多羅樹圍 = makeWcPtLayer(wcPtGeoJSON, '王多羅樹圍', mkCircleIcon('#ff7f00', 10));
-const wc_pt_鮮圍 = makeWcPtLayer(wcPtGeoJSON, '鮮圍', mkTriIcon('#e41a1c', 10));
-const wc_pt_御圍 = makeWcPtLayer(wcPtGeoJSON, '御圍', mkTriIcon('#ff7f00', 10));
-
-// 기본 표시
-wc_pt_演武圍.addTo(map);
-wc_pt_王多羅樹圍.addTo(map);
-wc_pt_鮮圍.addTo(map);
-wc_pt_御圍.addTo(map);
-      
+}      
       
       // 국경선 백색 라인
       const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
@@ -608,6 +560,54 @@ const mkTriPt = (color, { size = 10, label = false } = {}) => ({
   label,
   pointToLayer: (f, latlng) => L.marker(latlng, { icon: mkTriIcon(color, size) })
 });
+
+// 위장_포인트
+const wcPtGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pt.geojson');
+
+// 아이콘 팩토리
+const mkCircleIcon = (color, size = 10) => L.divIcon({
+  className: '',
+  html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.6);box-sizing:border-box;"></div>`,
+  iconSize: [size, size],
+  iconAnchor: [size/2, size/2],
+});
+
+// 하위 레이어 생성 함수
+function makeWcPtLayer(gj, kind, icon) {
+  return L.geoJSON(gj, {
+    filter: f => f.properties?.['종류'] === kind,
+    pointToLayer: (f, latlng) => {
+      const marker = L.marker(latlng, { icon });
+      oms.addMarker(marker);
+      return marker;
+    },
+    onEachFeature: (feature, layer) => {
+      const p = feature.properties || {};
+      const labelText = p.name_chf || p.name || '정보';
+      layer.bindTooltip(labelText, {
+        permanent: true, direction: 'top', offset: [0, -6],
+        opacity: 1, className: 'plain-label'
+      });
+      layer.on('click', (e) => {
+        L.DomEvent.stopPropagation(e);
+        highlightLayer(layer);
+        openInfoPanel(labelText, p);
+      });
+    }
+  });
+}
+
+const wc_pt_演武圍 = makeWcPtLayer(wcPtGeoJSON, '演武圍', mkTriIcon('#984ea3', 10));
+const wc_pt_王多羅樹圍 = makeWcPtLayer(wcPtGeoJSON, '王多羅樹圍', mkCircleIcon('#ff7f00', 10));
+const wc_pt_鮮圍 = makeWcPtLayer(wcPtGeoJSON, '鮮圍', mkTriIcon('#e41a1c', 10));
+const wc_pt_御圍 = makeWcPtLayer(wcPtGeoJSON, '御圍', mkTriIcon('#ff7f00', 10));
+
+// 기본 표시
+wc_pt_演武圍.addTo(map);
+wc_pt_王多羅樹圍.addTo(map);
+wc_pt_鮮圍.addTo(map);
+wc_pt_御圍.addTo(map);
+      
 function makeKarunLayer(gj, { time, ztype, color }) {
   return L.geoJSON(gj, {
     filter: (f) => {
