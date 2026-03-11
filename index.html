@@ -792,6 +792,9 @@ L.control.groupedLayers(baseLayers, groupedOverlays, {
   groupCheckboxes: true
 }).addTo(map);
 wcTypeLayers['盛京圍場'].bringToFront();
+      map.on('overlayadd', () => {
+  wcTypeLayers['盛京圍場'].bringToFront();
+});
     })().catch(err => {
       console.error(err);
       alert(err.message || err);
