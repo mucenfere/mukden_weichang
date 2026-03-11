@@ -519,7 +519,7 @@ for (const name of KARUN_NAMES) {
         })
       });
 
-      //icon
+      //png icon
 
 const icon_wp_gate = L.icon({
   iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/willowgateicon.png',
@@ -533,6 +533,12 @@ const icon_giyamun = L.icon({
   iconAnchor: [9, 9],
   popupAnchor: [0, -9]
 });   
+const icon_jq_weichang = L.icon({
+  iconUrl: './data/img/tower-control.png',
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -8]
+});
 
 //카룬의 필터
 function zoneType(zoneStr){
@@ -680,7 +686,26 @@ const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulerg
 const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
 
 // 가경위장
-const jq_weichang   = makeKarunLayer(karunAll, { time: '가경23년', ztype: 'aba',   color: JQWC });
+const jq_weichang = L.geoJSON(karunAll, {
+  filter: f => {
+    const p = f.properties || {};
+    return p.time === '가경23년' && zoneType(p.zone) === 'aba';
+  },
+  pointToLayer: (f, latlng) => L.marker(latlng, { icon: icon_jq_weichang }),
+  onEachFeature: (feature, layer) => {
+    const p = feature.properties || {};
+    const labelText = p.name_chf || p.NAME_FT || '정보';
+    layer.bindTooltip(labelText, {
+      permanent: true, direction: 'top', offset: [0, -8],
+      opacity: 1, className: 'plain-label'
+    });
+    layer.on('click', (e) => {
+      L.DomEvent.stopPropagation(e);
+      highlightLayer(layer);
+      openInfoPanel(labelText, p);
+    });
+  }
+});
 
 // 도광
 const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
