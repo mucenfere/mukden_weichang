@@ -465,15 +465,16 @@ for (const name of TYPE_NAMES) {
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
   wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.25 });
 }
-wcTypeLayers['盛京圍場'] = makeWcLayer(
-  wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
-  null,
+wcTypeLayers['盛京圍場'] = L.geoJSON(
+  { type: 'FeatureCollection', features: wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場') },
   {
-    color: '#ffffff',
-    weight: 3,
-    opacity: 1,
-    fillOpacity: 0,
     interactive: false,
+    style: {
+      color: '#ffffff',
+      weight: 3,
+      opacity: 1,
+      fillOpacity: 0,
+    }
   }
 );
       
