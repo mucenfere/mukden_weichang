@@ -145,6 +145,10 @@
     /* 숨김 행 */
     tr.hidden-row { display: none; }
 
+    tbody tr.karun-last-row td {
+      border-bottom: 2px solid #aaa;
+    }
+
     .row-count {
       font-size: 12px;
       font-family: sans-serif;
@@ -163,7 +167,7 @@
   </nav>
 
   <div class="page-body">
-    <h1>성경위장 105小圍 지명목록</h1>
+    <h1>盛京围场 小围 地名录</h1>
     <p class="subtitle">Gazetteer of the 105 Small Enclosures of Mukden's Hunting Ground</p>
 
     <div class="filter-bar">
@@ -342,8 +346,13 @@
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
       let prevKarun = '';
-      rows.forEach(row => {
+      rows.forEach((row, idx) => {
         const tr = document.createElement('tr');
+        // 다음 행이 다른 카룬이거나 마지막 행이면 구분선 클래스 추가
+        const nextRow = rows[idx + 1];
+        if (!nextRow || nextRow[0] !== row[0]) {
+          tr.classList.add('karun-last-row');
+        }
         const karunCell = document.createElement('td');
         karunCell.className = 'karun-cell';
         if (row[0] !== prevKarun) {
