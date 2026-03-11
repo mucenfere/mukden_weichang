@@ -492,15 +492,52 @@ for (const name of KARUN_NAMES) {
 }
       
 // 위장_포인트
-      const wc_pt = await loadGeoJSON('./data/mukden_weichang_pt.geojson', {
-       label: true,
-      pointToLayer: (feature, latlng) => {
-    const marker = L.marker(latlng, { icon: icon_admin });
-    oms.addMarker(marker);                                
-    return marker;
-  }
+const wcPtGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pt.geojson');
+
+// 아이콘 팩토리
+const mkCircleIcon = (color, size = 10) => L.divIcon({
+  className: '',
+  html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.6);box-sizing:border-box;"></div>`,
+  iconSize: [size, size],
+  iconAnchor: [size/2, size/2],
 });
-      wc_pt.addTo(map);
+
+// 하위 레이어 생성 함수
+function makeWcPtLayer(gj, kind, icon) {
+  return L.geoJSON(gj, {
+    filter: f => f.properties?.['종류'] === kind,
+    pointToLayer: (f, latlng) => {
+      const marker = L.marker(latlng, { icon });
+      oms.addMarker(marker);
+      return marker;
+    },
+    onEachFeature: (feature, layer) => {
+      const p = feature.properties || {};
+      const labelText = p.name_chf || p.name || '정보';
+      layer.bindTooltip(labelText, {
+        permanent: true, direction: 'top', offset: [0, -6],
+        opacity: 1, className: 'plain-label'
+      });
+      layer.on('click', (e) => {
+        L.DomEvent.stopPropagation(e);
+        highlightLayer(layer);
+        openInfoPanel(labelText, p);
+      });
+    }
+  });
+}
+
+const wc_pt_演武圍 = makeWcPtLayer(wcPtGeoJSON, '演武圍', mkTriIcon('#984ea3', 10));
+const wc_pt_王多羅樹圍 = makeWcPtLayer(wcPtGeoJSON, '王多羅樹圍', mkCircleIcon('#ff7f00', 10));
+const wc_pt_鮮圍 = makeWcPtLayer(wcPtGeoJSON, '鮮圍', mkTriIcon('#e41a1c', 10));
+const wc_pt_御圍 = makeWcPtLayer(wcPtGeoJSON, '御圍', mkTriIcon('#ff7f00', 10));
+
+// 기본 표시
+wc_pt_演武圍.addTo(map);
+wc_pt_王多羅樹圍.addTo(map);
+wc_pt_鮮圍.addTo(map);
+wc_pt_御圍.addTo(map);
+      
       
       // 국경선 백색 라인
       const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
@@ -692,7 +729,12 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
     "유조변(강희-옹정)": wpkangxi_bundle,
     "유조변(건륭이후)": wpqianlong_bundle
   },
-  "성경위장 105小圍": { "성경위장": wc_pt },
+  "성경위장 105小圍": {
+  "演武圍": wc_pt_演武圍,
+  "王多羅樹圍": wc_pt_王多羅樹圍,
+  "鮮圍": wc_pt_鮮圍,
+  "御圍": wc_pt_御圍,
+},
   "성경위장 小圍 유형": {
     "王多羅樹圍": wcTypeLayers['王多羅樹圍'],
     "演武圍":     wcTypeLayers['演武圍'],
