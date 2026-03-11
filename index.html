@@ -460,7 +460,7 @@ const wcTypeLayers = {};
 for (const name of TYPE_NAMES) {
   const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
   const color = WC_TYPE_COLORS[name] || '#ff7a00';
-  wcTypeLayers[name] = makeWcLayer(features, color);
+  wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.1 });
 }
 wcTypeLayers['盛京圍場'] = makeWcLayer(
   wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
