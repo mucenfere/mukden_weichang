@@ -308,8 +308,10 @@ function highlightLayer(layer) {
       fillOpacity: layer.options.fillOpacity,
     };
     layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.25 });
-    layer.bringToFront();
-    wcTypeLayers['盛京圍場'].bringToFront();
+layer.bringToFront();
+if (typeof wcTypeLayers !== 'undefined' && wcTypeLayers['盛京圍場']) {
+  wcTypeLayers['盛京圍場'].bringToFront();
+}
     const center = layer.getBounds().getCenter();
   }
 }
