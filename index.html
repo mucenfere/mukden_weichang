@@ -461,7 +461,7 @@
       for (const name of TYPE_NAMES) {
         const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
         const color = WC_TYPE_COLORS[name] || '#ff7a00';
-        wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.05 });
+        wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.25 });
       }
 
       // 盛京圍場 (항상 표시, interactive 없음)
@@ -716,7 +716,6 @@
       wcType_bundle.addTo(map);
 
       const wcKarun_bundle = L.layerGroup(Object.values(wcKarunLayers));
-      wcKarun_bundle.addTo(map);
 
       // ── 레이어 컨트롤 ────────────────────────────────────────────────
       const groupedOverlays = {
