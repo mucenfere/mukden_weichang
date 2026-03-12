@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="zh-Hans">
+<html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gazetteer – Map of Mukden's Hunting Ground</title>
+  <title>Work Log – Map of Mukden's Hunting Grounds</title>
   <link rel="stylesheet" href="./css/site.css" />
   <style>
-    html, body { height: 100%; margin: 0; background: #f8f8f6; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #111; }
+    html, body { height: 100%; margin: 0; background: #ffffff; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #111; }
     
-    footer{ padding:18px 16px; color:#666; font-size:12px; border-top:1px solid #eee; }
+    footer{ padding:18px 16px; color:#666; font-size:16px; border-top:1px solid #eee; }
     .tabs{
       display:flex;
       gap:48px;
@@ -16,7 +16,6 @@
       margin: 0 auto;
       align-items: center;
     }
-    
     .topnav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -52,31 +51,26 @@
       font-family: sans-serif;
     }
 
-    /* 필터 바 */
-    .filter-bar {
+    .toolbar {
       display: flex;
-      gap: 12px;
-      align-items: center;
+      justify-content: flex-end;
       margin-bottom: 18px;
-      flex-wrap: wrap;
     }
-    .filter-bar label {
-      font-size: 13px;
-      font-family: sans-serif;
-      color: #444;
-    }
-    .filter-bar select, .filter-bar input {
-      font-size: 13px;
-      font-family: sans-serif;
-      padding: 4px 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: #fff;
-      color: #111;
-    }
-    .filter-bar input { width: 180px; }
 
-    /* 테이블 래퍼 */
+    .btn-add {
+      font-size: 13px;
+      font-family: sans-serif;
+      padding: 5px 14px;
+      border: 1px solid #3a3028;
+      border-radius: 4px;
+      background: #3a3028;
+      color: #f5f0e8;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .btn-add:hover { background: #5a4a3a; }
+
     .table-wrap {
       overflow-x: auto;
       border: 1px solid #e0e0e0;
@@ -85,10 +79,10 @@
     }
 
     table {
-      width: 1200px;
+      width: 100%;
+      min-width: 600px;
       table-layout: fixed;
       border-collapse: collapse;
-      margin: 0 auto;
       font-size: 13px;
       line-height: 1.55;
     }
@@ -98,7 +92,7 @@
       color: #f5f0e8;
     }
     thead th {
-      padding: 10px 12px;
+      padding: 10px 14px;
       text-align: left;
       font-weight: 700;
       font-family: sans-serif;
@@ -111,57 +105,60 @@
 
     tbody tr { border-bottom: 1px solid #f0f0ee; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:nth-child(even) { background: #f5f5f3; }
+    tbody tr:nth-child(even) { background: #f9f9f9; }
     tbody tr:nth-child(odd)  { background: #ffffff; }
     tbody tr:hover { background: #e8f0fe; }
 
-    /* 관할카룬 셀 - 병합 표시용 */
-    td.karun-cell {
-      font-weight: 700;
-      font-size: 13px;
-      vertical-align: top;
-      white-space: nowrap;
-      background: #f0f0ee;
-      border-right: 2px solid #ddd;
-      padding: 8px 12px;
-    }
-
     td {
-      padding: 7px 12px;
+      padding: 9px 14px;
       vertical-align: top;
       border-right: 1px solid #e0e0e0;
     }
     td:last-child { border-right: none; }
 
-    /* 위장 종류 배지 */
-    .badge {
-      display: inline-block;
-      padding: 1px 7px;
-      border-radius: 3px;
+    td.td-date {
+      white-space: nowrap;
+      font-size: 13px;
+      color: #333;
+      width: 150px;
+    }
+
+    td.td-content {
+      font-size: 13px;
+      color: #111;
+    }
+    td.td-content .detail {
       font-size: 12px;
-      font-family: sans-serif;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    td.td-timestamp {
+      white-space: nowrap;
+      font-size: 12px;
+      color: #888;
+      font-family: monospace;
+      width: 150px;
+    }
+
+    td.td-actions {
+      width: 80px;
       white-space: nowrap;
     }
-    .badge-演武围 { background: #e8d8f0; color: #5a2a7a; }
-    .badge-旺多罗树围 { background: #ffe0b8; color: #7a4000; }
-    .badge-鲜围 { background: #ffd8d8; color: #7a1a1a; }
-    .badge-御围 { background: #d8ecd8; color: #1a5a1a; }
 
-    /* 사계 셀 */
-    td.siji { font-size: 12px; color: #444; max-width: 160px; }
-
-    /* 면적 셀 */
-    td.area { white-space: nowrap; font-size: 12px; color: #555; }
-
-    /* 만주명 */
-    td.manchu { font-style: italic; color: #555; font-size: 12px; }
-
-    /* 숨김 행 */
-    tr.hidden-row { display: none; }
-
-    tbody tr.karun-last-row td {
-      border-bottom: 2px solid #aaa;
+    .btn-edit, .btn-del {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #333;
+      margin-right: 3px;
     }
+    .btn-edit:hover { background: #f0f4ff; border-color: #99b; }
+    .btn-del { color: #900; border-color: #e8b0a0; }
+    .btn-del:hover { background: #fff0ee; }
 
     .row-count {
       font-size: 12px;
@@ -169,274 +166,282 @@
       color: #888;
       margin-top: 10px;
     }
+
+    /* 모달 */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.35);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 28px 32px;
+      width: 480px;
+      max-width: 95vw;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      transform: translateY(10px);
+      transition: transform .18s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal h3 {
+      font-size: 16px; font-weight: 700;
+      margin: 0 0 20px 0;
+      color: #3a3028;
+    }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: 12px; font-family: sans-serif;
+      color: #555; margin-bottom: 5px; font-weight: 600;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 13px; font-family: sans-serif;
+      border: 1px solid #ccc; border-radius: 4px;
+      background: #fff; color: #111;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: #7a9; }
+    .form-group textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+    .modal-footer {
+      display: flex; justify-content: flex-end; gap: 8px;
+      margin-top: 20px; padding-top: 16px;
+      border-top: 1px solid #eee;
+    }
+    .btn-cancel {
+      font-size: 13px; padding: 6px 16px;
+      border: 1px solid #ccc; border-radius: 4px;
+      background: #fff; color: #444; cursor: pointer;
+    }
+    .btn-cancel:hover { background: #f5f5f5; }
+    .btn-save {
+      font-size: 13px; padding: 6px 16px;
+      border: 1px solid #3a3028; border-radius: 4px;
+      background: #3a3028; color: #f5f0e8;
+      cursor: pointer; font-weight: 600;
+    }
+    .btn-save:hover { background: #5a4a3a; }
+
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      font-size: 12px; font-family: sans-serif;
+      background: #3a3028; color: #f5f0e8;
+      padding: 10px 18px; border-radius: 4px;
+      opacity: 0; transform: translateY(8px);
+      transition: all .2s; z-index: 300;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
-  <nav class="topnav">
-    <a href="https://mucenfere.github.io/">Home</a>
-    <a href="./index.html">Map</a>
-    <a href="./gazetteer.html">Gazetteer</a>
-    <a href="./reference.html">Reference</a>
-    <a href="./worklog.html">Work Log</a>
-  </nav>
 
-  <div class="page-body">
-    <h1>성경위장 105小圍 지명 목록</h1>
-    <p class="subtitle">Gazetteer of the 105 Small Enclosures of Mukden's Hunting Ground</p>
+<nav class="topnav">
+  <a href="https://mucenfere.github.io/">Home</a>
+  <a href="./index.html">Map</a>
+  <a href="./gazetteer.html">Gazetteer</a>
+  <a href="./reference.html">Reference</a>
+  <a href="./worklog.html">Work Log</a>
+</nav>
 
-    <div class="filter-bar">
-      <label>管辖卡伦：
-        <select id="filterKarun">
-          <option value="">全部</option>
-          <option>台毕拉卡伦</option>
-          <option>蒙古伙洛卡伦</option>
-          <option>西巴拉河卡伦</option>
-          <option>大荒沟卡伦</option>
-          <option>土口子卡伦</option>
-          <option>梅河额夫勒卡伦</option>
-          <option>双榆树卡伦</option>
-          <option>赫尔苏卡伦</option>
-          <option>归勒合卡伦</option>
-          <option>孤山河卡伦</option>
-          <option>那丹伯卡伦</option>
-          <option>大沙河卡伦</option>
-        </select>
-      </label>
-      <label>围场种类：
-        <select id="filterType">
-          <option value="">全部</option>
-          <option>演武围</option>
-          <option>旺多罗树围</option>
-          <option>鲜围</option>
-          <option>御围</option>
-        </select>
-      </label>
-      <label>搜索：
-        <input type="text" id="filterSearch" placeholder="地名、满语名…" />
-      </label>
-    </div>
+<div class="page-body">
+  <h1>Work Log/作業記錄</h1>
+  <p class="subtitle">Work Log – research notes, revisions, and updates</p>
 
-    <div class="table-wrap">
-      <table id="gazeteerTable">
-        <colgroup>
-          <col style="width: 120px;">
-          <col style="width: 120px;">
-          <col style="width: 120px;">
-          <col style="width: 500px;">
-          <col style="width: 100px;">
-          <col style="width: 240px;">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>管辖卡伦</th>
-            <th>小围名（汉）</th>
-            <th>小围名（满）</th>
-            <th>四界</th>
-            <th>围场种类</th>
-            <th>面积</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-        </tbody>
-      </table>
-    </div>
-    <div class="row-count" id="rowCount"></div>
+  <div class="toolbar">
+    <button class="btn-add" onclick="openModal()">+ 새 항목 추가</button>
   </div>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col style="width: 150px;">
+        <col>
+        <col style="width: 150px;">
+        <col style="width: 80px;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>날짜</th>
+          <th>내용</th>
+          <th>로그 작성 시간</th>
+          <th>관리</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="row-count" id="rowCount"></div>
+</div>
+
+<!-- 모달 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnBg(event)">
+  <div class="modal">
+    <h3 id="modalTitle">새 작업 로그</h3>
+    <div class="form-group">
+      <label>날짜</label>
+      <input type="date" id="fDate" />
+    </div>
+    <div class="form-group">
+      <label>내용 제목</label>
+      <input type="text" id="fTitle" placeholder="예) 관련 논문 투고" />
+    </div>
+    <div class="form-group">
+      <label>상세 내용 (선택)</label>
+      <textarea id="fDetail" placeholder="예) 〈학림〉 xx호, 논문 제목 〈~~연구〉"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveEntry()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
   <footer>
     <div class="wrap">© mucenfere</div>
   </footer>
   
-  <script>
-    const data = [
-      // 台毕拉卡伦
-      ["台毕拉卡伦","扎克丹","jakdan","东与伯尔豁围搭界，西南至边栅，北与哈束力憨色钦搭界。（围内设有神树、碑亭。）","演武围","东西宽三十五里，南北长三十五里。"],
-      ["台毕拉卡伦","伯尔豁","bolgo","东与勒夫都什西围搭界，西与扎克丹围搭界，南与台辉翰围搭界，北与哈束力憨色钦围搭界。（围内设有冬围安营。）","演武围","东西宽三十里，南北长四十里。"],
-      ["台毕拉卡伦","台辉翰","tai hoihan","东与勒夫朱卜启围搭界，南接边栅外开原界，边栅内围场界，北与伯尔豁围搭界。（围内设有台毕拉卡伦。）","演武围","东西宽二十里，南北长二十五里。"],
-      ["台毕拉卡伦","勒夫都什西","lefu dosihi","东与拉呼达围搭界，西与伯尔豁围搭界，南与勒夫朱卜启围搭界，北与勒夫得恩围搭界。（围内设有冬围安营。）","演武围","东西宽三十里，南北长四十里。"],
-      ["台毕拉卡伦","勒夫朱卜启","lefu jubki","东与乌里围搭界，西与台辉翰围搭界，北与勒夫都什西围搭界。","演武围","东西宽二十里，南北长二十五里。"],
-      ["台毕拉卡伦","勒夫得恩","lefu den","东与妞合围搭界，西与哈束力憨色钦围搭界，南与勒夫都什西围搭界，北与哈束力憨围搭界。（围内设有冬围安营。）","演武围","东西宽三十五里，南北长四十里。"],
-      ["台毕拉卡伦","妞合","niohe","东与更刻围搭界，西与勒夫得恩围搭界，南与拉呼达围搭界，北与达启围搭界。","演武围","东西宽二十五里，南北长三十里。"],
-      // 蒙古伙洛卡伦
-      ["蒙古伙洛卡伦","哈束力憨色钦","hasurgan sekiyen","东与勒夫得恩围搭界，南与扎克丹围搭界。以封堆与吉林分界。","演武围","东西宽四十里，南北长二十里。"],
-      ["蒙古伙洛卡伦","哈束力憨","hasurgan","东与达启围搭界，西接封堆外吉林界，南与勒夫得恩围搭界，北与哈束力憨伯野围搭界。（围内设有蒙古伙洛卡伦。）","演武围","东西宽三十五里，南北长三十里。"],
-      ["蒙古伙洛卡伦","哈束力憨伯野","hasurgan beye","东与达启达围搭界，西接封堆外吉林界，南与哈束力憨围搭界，北与哈束力憨达围搭界。","演武围","东西宽三十里，南北长三十里。"],
-      // 西巴拉河卡伦
-      ["西巴拉河卡伦","更刻","gengkei","图缺。","演武围","图缺。"],
-      ["西巴拉河卡伦","拉呼达","lahvda","东与古砬子围搭界，西与勒夫得恩围搭界，南与乌里围搭界，北与妞合围搭界。（围内设有冬围安营，西巴拉河卡伦。）","演武围","东西宽四十里，南北长四十五里。"],
-      ["西巴拉河卡伦","登噶拉","den gala","东与那力浑围搭界，西与更刻围搭界，南与登噶拉达围搭界，北与依吗呼围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["西巴拉河卡伦","登噶拉达","den gala da","东与登噶拉巴克钦围搭界，西与古砬子围搭界，南与山城子围搭界，北与登噶拉围搭界。","演武围","东西宽三十五里，南北长四十里。"],
-      ["西巴拉河卡伦","山彦哈达","xanyan hada","东与占色钦围搭界，西与依吗呼围搭界，南与那力浑围搭界，北与依吗呼围搭界。（围内设有冬围安营。）","演武围","东西宽三十里，南北长三十里。"],
-      ["西巴拉河卡伦","古砬子","guladzi","东与登噶拉达围搭界，西与拉呼达围搭界，南与十八道背围搭界，北与更刻围搭界。（围内设有冬围安营。）","演武围","东西宽三十里，南北长三十五里。"],
-      ["西巴拉河卡伦","山城子","xan cengdzi","东与扎克丹围搭界，西与十八道背围搭界，南接边栅南开原界，北与登噶拉达围搭界。（围内设有冬围安营。）","演武围","东西宽三十五里，南北长四十里。"],
-      ["西巴拉河卡伦","十八道背","xibadaobei","东与山城子围搭界，西与乌里围搭界，南接边栅南开原界，北与古砬子围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["西巴拉河卡伦","乌里","uli","东与十八道背围搭界，西与勒夫朱卜启围搭界，南接边栅南开原界，北与拉呼达围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      // 大荒沟卡伦
-      ["大荒沟卡伦","扎克丹哈达","jakdan hada","东与野鸡背围搭界，西与山城子围搭界，南接边栅南开原界，北与登噶拉巴克钦围搭界。","演武围","东西宽三十五里，南北长四十里。"],
-      ["大荒沟卡伦","野鸡背","yegibei","东与闹林子围搭界，西与扎克丹哈达围搭界，南接边栅南开原界，北与嵌石岭围搭界。（围内设有大荒沟卡伦。）","演武围","东西宽四十五里，南北长五十里。"],
-      ["大荒沟卡伦","嵌石岭","ciyan xi ling","东与束鲁围搭界，西与登噶拉巴克钦围搭界，南与野鸡背围搭界，北与哈克山围搭界。","演武围","东西宽三十五里，南北长四十里。"],
-      ["大荒沟卡伦","登噶拉巴克钦","den gala bakcin","东与嵌石岭围搭界，西与登噶拉达围搭界，南与扎克丹哈达围搭界，北与那力浑围搭界。（围内设有冬围安营两处。）","演武围","东西宽四十里，南北长三十五里。"],
-      ["大荒沟卡伦","那力浑","narhvn","东与哈克山围搭界，西与登噶拉围搭界，南与登噶拉巴克钦围搭界，北与山彦哈达围搭界。","演武围","东西宽三十五里，南北长三十里。"],
-      ["大荒沟卡伦","哈克山","hakxan","东与付力哈色钦围搭界，西与那力浑围搭界，南与嵌石岭围搭界，北与占色钦围搭界。","演武围","东西宽四十里，南北长四十里。"],
-      ["大荒沟卡伦","付力哈色钦","fulha sekiyen","东与年木州围搭界，西与占色钦围搭界，南与付力哈哈达围搭界，北与大付力哈围搭界。","演武围","东西宽三十五里，南北长三十里。"],
-      ["大荒沟卡伦","占色钦","jan sekiyen","东与付力哈色钦围搭界，西与山彦哈达围搭界，南与哈克山围搭界，北与小巴彦围搭界。（围内设有冬围安营。）","演武围","东西宽三十五里，南北长三十里。"],
-      ["大荒沟卡伦","付力哈哈达","fulha hada","东与倭合台围搭界，西与哈克山围搭界，南与束鲁围搭界，北与付力哈色钦围搭界。","演武围","东西宽五十里，南北长五十里。"],
-      ["大荒沟卡伦","闹林子","nao lin dzi","东与乌束围搭界，西与野鸡背围搭界，南接边栅南开原界，北与束鲁围搭界。","演武围","东西宽五十里，南北长五十里。"],
-      ["大荒沟卡伦","束鲁","xuru","东与巴杨河围搭界，西与嵌石岭围搭界，南与闹林子围搭界，北与付力哈哈达围搭界。","演武围","东西宽五十里，南北长五十里。"],
-      // 土口子卡伦
-      ["土口子卡伦","倭合台","wehe tai","东与牙启围搭界，西与付力哈哈达围搭界，南与巴杨河围搭界，北与年木州围搭界。","御围","东西宽五十里，南北长五十里。"],
-      ["土口子卡伦","年木州","niyamju","东与巴彦围搭界，西与付力哈色钦围搭界，南与倭合台围搭界，北与都林巴付力哈围搭界。","御围","东西宽三十五里，南北长四十里。"],
-      ["土口子卡伦","巴彦","bayan","东与黑嘴子围搭界，西与年木州围搭界，南与牙启围搭界，北与小付力哈围搭界。","御围","东西宽三十五里，南北长三十里。"],
-      ["土口子卡伦","牙启","yaki","东与果尔敏朱敦围搭界，西与倭合台围搭界，南与柳河身卜敦围搭界，北与巴彦围搭界。","御围","东西宽三十五里，南北长四十里。"],
-      ["土口子卡伦","巴杨河","bayangga","东与柳河身卜敦围搭界，西与束鲁围搭界，南与乌束围搭界，北与倭合台围搭界。（围内设有土口子卡伦。）","演武围","东西宽四十里，南北长五十里。"],
-      ["土口子卡伦","乌束","usu","东与山城子围搭界，西与闹林子围搭界，南与英额边门搭界，北与巴杨河围搭界。","演武围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","山城子","xan cengdzi","东与老虎顶子山围搭界，西与乌束围搭界，南与转砬子山子搭界，北与柳河身卜敦围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","柳河身伯野","liohexen beye","东与康家砬子搭界，西与柳河身卜敦围搭界，南与老虎顶子搭界，北与果尔敏朱敦围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","柳河身卜敦","liohexen buden","东与柳河身伯野围搭界，西与巴杨河围搭界，南与山城子围搭界，北与牙启围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","吉林卜敦","girin budun","东与康家砬子搭界，西与果尔敏朱敦围搭界，南与柳河身伯野围搭界，北与那力浑围搭界。","御围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","吉林哈达","girin hada","东与妞妞围搭界，西与山彦倭合围搭界，南与那力浑围搭界，北与归勒合哈达围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","果尔敏朱敦","golmin judun","东与吉林卜敦围搭界，西与牙启围搭界，南与柳河身伯野围搭界，北与黑嘴子围搭界。","御围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","那力浑","narhvn","东至图门河，西与黑嘴子围搭界，南与吉林卜敦围搭界，北与吉林哈达围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["土口子卡伦","妞妞","nionio","东至大柳树河，西与吉林哈达围搭界，南与十八间水背围搭界，北与阿木巴勒克围搭界。","鲜围","东西宽四十五里，南北长五十里。"],
-      // 梅河额夫勒卡伦
-      ["梅河额夫勒卡伦","大付力哈","amba fulha","东与都林巴付力哈围搭界，西与小巴彦围搭界，南与付力哈色钦围搭界，北与大韦军围搭界。","演武围","东西宽三十五里，南北长四十里。"],
-      ["梅河额夫勒卡伦","都林巴付力哈","dulinba fulha","东与小付力哈围搭界，西与大付力哈围搭界，南与年木州围搭界，北与额音木鲁围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","小付力哈","ajige fulha","东与山彦倭合围搭界，西与都林巴付力哈围搭界，南与巴彦围搭界，北与付力哈年木善围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","付力哈年木善","fulha niyamxan","东与古瓦什鲜额夫勒围搭界，西与额音木鲁围搭界，南与小付力哈围搭界，北与额音围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","舍力","xeri","东与阿布达拉洪阔围搭界，西与额音围搭界，南与古瓦什鲜额夫勒围搭界，北与查力巴围搭界。","御围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","查力巴","calba","东与八旦岗子围搭界，西与阿兰伯野围搭界，南与舍力围搭界，北与阿兰阿拉本围搭界。","御围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","阿布达拉洪阔","abdara hvngkeo","东与阿几个色合勒围搭界，西与舍力围搭界，南与归勒哈达布憨围搭界，北与八旦岗子围搭界。","演武围","东西宽三十里，南北长三十里。"],
-      ["梅河额夫勒卡伦","古瓦什鲜额夫勒","gvwasihiyan oforo","东与归勒哈达布憨围搭界，西与付力哈年木善围搭界，南与山彦倭合围搭界，北与舍力围搭界。（围内设有梅河卡伦。）","演武围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","山彦倭合","xanyan wehe","东与吉林哈达围搭界，西与小付力哈围搭界，南与黑嘴子围搭界，北与古瓦什鲜额夫勒围搭界。","御围","东西宽三十里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","黑嘴子","hei juwei dzi","东与那力浑围搭界，西与巴彦围搭界，南与果尔敏朱敦围搭界，北与山彦倭合围搭界。","演武围","东西宽三十五里，南北长三十五里。"],
-      ["梅河额夫勒卡伦","归勒哈达布憨","guilehe dabagan","东与阿木巴勒克围搭界，西与古瓦什鲜额夫勒围搭界，南与吉林哈达围搭界，北与阿布达拉洪阔围搭界。","御围","东西宽四十里，南北长四十里。"],
-      ["梅河额夫勒卡伦","阿木巴勒克","amba leke","东至三通河，西与归勒哈达布憨围搭界，南与妞妞围搭界，北与阿几个勒克围搭界。","鲜围","东西宽四十五里，南北长五十里。"],
-      ["梅河额夫勒卡伦","阿几个勒克","ajige leke","东至三通河，西与阿布达拉洪阔围搭界，南与三通辉憨围搭界，北与阿木巴勒克围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["梅河额夫勒卡伦","八旦岗子","badan cgangdzi","东与三通辉憨围搭界，西与查力巴围搭界，南与阿布达拉洪阔围搭界，北与朱鲁莽卡围搭界。","鲜围","东西宽四十里，南北长四十五里。"],
-      ["梅河额夫勒卡伦","朱鲁莽卡","juru mangga","东至辉发豁吞，西与阿兰阿拉本围搭界，南与八旦岗子围搭界，北与依拉气勒克围搭界。","鲜围","东西宽四十里，南北长四十里。"],
-      ["梅河额夫勒卡伦","三通辉憨","santun hoihan","东与色里必拉色钦搭界，西与朱鲁莽卡围搭界，南与三通辉翰围搭界，北与额林加们围搭界。（围内设有开原城属卡伦两处、兴京城属卡伦一处、抚顺城属卡伦一处。）","鲜围","东西宽一百里，南北长一百六十里。"],
-      // 双榆树卡伦
-      ["双榆树卡伦","哈束力憨达","hasurgan da","东与艾辛伯野围搭界，西接封堆外吉林界，南与哈束力憨伯野围搭界，北与山彦哈达围搭界。（围内设有双榆树卡伦、冬围安营。）","演武围","东西宽四十里，南北长三十五里。"],
-      ["双榆树卡伦","艾辛伯野","aisin beye","东与艾辛年木州围搭界，西与哈束力憨达围搭界，南与达启达围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["双榆树卡伦","艾辛年木州","aisin niyamju","东与朱朱胡围搭界，西与艾辛伯野围搭界，南与查库兰达围搭界，北与归勒合哈达围搭界。","演武围","东西宽三十五里，南北长三十五里。"],
-      ["双榆树卡伦","达启达","daki da","东与查库兰达围搭界，西与哈束力憨伯野围搭界，南与达启围搭界，北与艾辛伯野围搭界。","演武围","东西宽三十里，南北长三十里。"],
-      ["双榆树卡伦","达启","daki","图缺。","演武围","图缺。"],
-      // 赫尔苏卡伦
-      ["赫尔苏卡伦","乌尔尖哈达","ulgiyan hada","东与归勒合哈达围搭界，西与山彦哈达围搭界，南与艾辛伯野围搭界，北至吉林界。（围内设有赫尔苏卡伦。）","旺多罗树围","东西宽三十里，南北长四十里。"],
-      ["赫尔苏卡伦","山彦哈达","xanyan hada","东与乌尔尖哈达围搭界，西接封堆外吉林界，南与哈束力憨达围搭界，北至吉林界。","旺多罗树围","东西宽四十五里，南北长五十里。"],
-      ["赫尔苏卡伦","朱朱胡","jujuhu","东与鲜达布憨围搭界，西与艾辛年木州围搭界，南与乌鲁里围搭界，北与依兰木哈达围搭界。","演武围","东西宽三十里，南北长二十五里。"],
-      ["赫尔苏卡伦","查库兰达","cakvran da","东与乌鲁里围搭界，西与达启达围搭界，南与查库兰围搭界，北与艾辛年木州围搭界。","演武围","东西宽三十五里，南北长三十五里。"],
-      ["赫尔苏卡伦","查库兰","cakvran","东与依马呼围搭界，西与达启围搭界，南与更刻围搭界，北与查库兰达围搭界。（围内冬围时安设\"行台\"，预备达送公文。还设有冬围安营。）","演武围","东西宽二十五里，南北长三十五里。"],
-      ["赫尔苏卡伦","依马呼","imahv","东与山彦哈达围搭界，西与查库兰围搭界，南与登噶拉围搭界，北与乌鲁里围搭界。（围内设有冬围安营两处。）","演武围","东西宽三十五里，南北长三十五里。"],
-      ["赫尔苏卡伦","依马呼哈达","imahv hada","东与小巴彦围搭界，西与乌鲁里围搭界，南与山彦哈达围搭界，北与鲜达布憨围搭界。","演武围","东西宽四十五里，南北长四十里。"],
-      ["赫尔苏卡伦","鲜达卜憨","hiyan dabagan","东与大巴彦围搭界，西与朱朱胡围搭界，南与依马呼哈达围搭界，北与乌鲁里卜敦围搭界。","演武围","东西宽三十五里，南北长三十五里。"],
-      ["赫尔苏卡伦","乌鲁里","uluri","东与依马呼哈达围搭界，西与查库兰达围搭界，南与依马呼围搭界，北与朱朱胡围搭界。","演武围","东西宽四十里，南北长四十五里。"],
-      ["赫尔苏卡伦","乌鲁里卜敦","uluri budun","东与扎拉芬围搭界，西与依兰木哈达围搭界，南与鲜达布憨围搭界，北与古城围搭界。","演武围","东西宽三十里，南北长三十里。"],
-      // 归勒合卡伦
-      ["归勒合卡伦","归勒合哈达","guilehe hada","东与依兰木哈达围搭界，西与乌尔尖哈达围搭界，南与艾辛年木州围搭界，北接封堆外吉林界。（围内设有归勒合卡伦。）","旺多罗树围","东西宽四十五里，南北长四十里。"],
-      ["归勒合卡伦","依兰木哈达","ilan muhaliyan","东与乌鲁里卜敦围搭界，西与归勒合哈达围搭界，南与朱朱胡围搭界，北接封堆外吉林界。","旺多罗树围","东西宽四十里，南北长三十五里。"],
-      ["归勒合卡伦","扎拉芬","jalafun alin","东与小韦军围搭界，西与乌鲁里围搭界，南与大巴彦围搭界，北与依巴卡巴围搭界。（围内设有冬围安营两处。）","演武围","东西宽三十五里，南北长四十里。"],
-      ["归勒合卡伦","大巴彦","amba bayan","东与大韦军围搭界，西与鲜达卜憨围搭界，南与小巴彦围搭界，北与扎拉芬围搭界。","演武围","东西宽四十里，南北长四十五里。"],
-      ["归勒合卡伦","小巴彦","ajige bayan","东与大付力哈围搭界，西与依马呼哈达围搭界，南与占色钦围搭界，北与大巴彦围搭界。（围内设有冬围安营。）","演武围","东西宽三十里，南北长三十五里。"],
-      ["归勒合卡伦","韦军木鲁","weidun mulu","东与乌什哈围搭界，西与扎拉芬围搭界，南与大韦军围搭界，北与夫克锦围搭界。（围内设有冬围安营。）","演武围","东西宽四十五里，南北长五十里。"],
-      ["归勒合卡伦","小韦军","ajige weidun","","演武围",""],
-      ["归勒合卡伦","依巴卡巴","iba kaba","东与夫克锦围搭界，西与古城围搭界，南与扎拉芬围搭界，北至阿几各色合勒围搭界。","演武围","东西宽二十五里，南北长三十里。"],
-      ["归勒合卡伦","夫克锦","fukjin","东与阿兰达围搭界，西与依巴卡巴围搭界，南与小韦军围搭界，北与阿木巴色合勒围搭界。（围内设有大沙河卡伦。）","演武围","东西宽三十里，南北长三十五里。"],
-      // 孤山河卡伦
-      ["孤山河卡伦","卡尔非音","kalfiyan","东与阿几个色合勒围搭界，西接封堆外吉林界，南与古城围搭界，北接封堆外吉林界。（围内设有孤山河卡伦。）","旺多罗树围","东西宽三十五里，南北长三十五里。"],
-      ["孤山河卡伦","古城","gu ceng","东与依巴卡巴围搭界，西接封堆外吉林界，南与乌鲁里卜敦围搭界，北与卡尔非音围搭界。","旺多罗树围","东西宽三十五里，南北长三十五里。"],
-      ["孤山河卡伦","乌什哈","usiha","东与额音围搭界，西与小韦军围搭界，南与额音木鲁围搭界，北与阿兰达围搭界。（围内冬围时安设\"行台\"，预备达送公文。还设有冬围安营。）","演武围","东西宽二十五里，南北长三十里。"],
-      ["孤山河卡伦","额音木鲁","eyen mulu","东与付力哈年木善围搭界，西与大韦军围搭界，南与都林巴付力哈围搭界，北与乌什哈围搭界。（围内设有冬围安营。）","演武围","东西宽三十五里，南北长三十里。"],
-      ["孤山河卡伦","大韦军","amba weidun","东与额音木鲁围搭界，西与大巴彦围搭界，南与阿木巴付力哈围搭界，北与韦军木鲁围搭界。（围内设有冬围安营两处。）","演武围","东西宽四十五里，南北长四十里。"],
-      // 那丹伯卡伦
-      ["那丹伯卡伦","阿几个色合勒","ajige sehere","东与阿木巴色合勒围搭界，西与卡尔非音围搭界，南与依巴卡巴围搭界，北接封堆外吉林界。（围内设有那丹伯卡伦。）","旺多罗树围","东西宽五十里，南北长七十里。"],
-      ["那丹伯卡伦","阿木巴色合勒","amba sehere","东与阿兰年木善围搭界，西与阿几个色合勒围搭界，南与夫克锦围搭界，北与腰水泡处搭界。（围内设有\"石碑\"，与吉林定界）","旺多罗树围","东西宽五十里，南北长五十里。"],
-      ["那丹伯卡伦","额林加们","orin giyamun","东至三通河，西与辉发围搭界，南与辉发豁吞搭界，北与苇子河搭界。（围内设有吉林将军属卡伦一处。）","御围","东西宽四十里，南北长四十里。"],
-      ["那丹伯卡伦","卜尔善","bulxan","东与扎尔启兰围搭界，西至封堆，南与阿兰朱卜启围搭界，北与苇子河搭界。（围内设有五个石堆，为与吉林分界。）","鲜围","东西宽四十里，南北长四十里。"],
-      ["那丹伯卡伦","扎尔启兰","jarkilan","东与辉发围搭界，西与卜尔善围搭界，南与齐勒克围搭界，北与苇河子搭界。","鲜围","东西宽三十五里，南北长三十五里。"],
-      ["那丹伯卡伦","辉发","hoifa","东与额林加们围搭界，西与扎尔启兰围搭界，南与依拉气勒克围搭界，北与苇子河搭界。","鲜围","东西宽四十里，南北长四十里。"],
-      // 大沙河卡伦
-      ["大沙河卡伦","阿兰达","alan da","东与阿兰伯野围搭界，西与夫克锦围搭界，南与乌什哈围搭界，北与阿兰年木善围搭界。","演武围","东西宽四十里，南北长四十五里。"],
-      ["大沙河卡伦","额音","eyen","东与舍力围搭界，西与乌什哈围搭界，南与付力哈年木善围搭界，北与阿兰伯野围搭界。（围内设有冬围安营两处。）","演武围","东西宽三十五里，南北长三十里。"],
-      ["大沙河卡伦","阿兰伯野","alan beye","东与查力巴围搭界，西与阿兰达围搭界，南与额音围搭界，北与阿兰巴克钦围搭界。（围内设有冬围安营。）","演武围","东西宽四十里，南北长三十里。"],
-      ["大沙河卡伦","阿兰阿拉本","alan arabun","东与朱鲁莽卡围搭界，西与阿兰巴克钦围搭界，南与查力巴围搭界，北与再勒克围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["大沙河卡伦","阿兰巴克钦","alan bakcin","东与阿兰阿拉奔围搭界，西与阿兰年木善围搭界，南与阿兰伯野围搭界，北与阿兰朱卜启围搭界。","演武围","东西宽三十里，南北长三十五里。"],
-      ["大沙河卡伦","阿兰朱卜启","alan jubki","东与再勒克围搭界，西与阿木巴色合勒围搭界，南与阿兰巴克钦围搭界，北与卜尔善围搭界。","演武围","东西宽五十里，南北长五十里。"],
-      ["大沙河卡伦","阿兰年木善","alan niyamxan","东与阿兰巴克钦围搭界，西与阿木巴色合勒围搭界，南与阿兰达围搭界，北与阿木巴勒克围搭界。","演武围","东西宽四十里，南北长四十里。"],
-      ["大沙河卡伦","阿木巴勒克","amba leke","东与阿兰朱卜启围搭界，西与小爆马子河搭界，南与阿兰年木善围搭界，北与爆马河子围搭界。","旺多罗树围","东西宽四十五里，南北长四十五里。"],
-      ["大沙河卡伦","齐勒克","jai leke","东与依拉气勒克围搭界，西与阿兰朱卜启围搭界，南与阿兰阿力奔围搭界，北与扎尔启兰围搭界。","旺多罗树围","东西宽三十五里，南北长三十五里。"],
-      ["大沙河卡伦","依拉气勒克","ilaci leke","东与辉发豁吞围搭界，西与再勒克围搭界，南与朱鲁莽卡围搭界，北与辉发围搭界。","旺多罗树围","东西宽四十里，南北长四十五里。"],
+<script>
+  const STORAGE_KEY = 'worklog_v1';
+  let entries = [];
+  let editingId = null;
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      entries = raw ? JSON.parse(raw) : defaultData();
+    } catch { entries = defaultData(); }
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function defaultData() {
+    return [
+      { id: 1, date: '2026-02-08', title: '홈페이지 개설', detail: '', timestamp: '202603111952' }
     ];
+  }
 
-    function renderTable(rows) {
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
-      let prevKarun = '';
-      rows.forEach((row, idx) => {
-        const tr = document.createElement('tr');
-        // 다음 행이 다른 카룬이거나 마지막 행이면 구분선 클래스 추가
-        const nextRow = rows[idx + 1];
-        if (!nextRow || nextRow[0] !== row[0]) {
-          tr.classList.add('karun-last-row');
-        }
-        const karunCell = document.createElement('td');
-        karunCell.className = 'karun-cell';
-        if (row[0] !== prevKarun) {
-          karunCell.textContent = row[0];
-          prevKarun = row[0];
-        }
-        tr.appendChild(karunCell);
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return `${y}년 ${parseInt(m)}월 ${parseInt(d)}일`;
+  }
 
-        const nameCell = document.createElement('td');
-        nameCell.textContent = row[1];
-        tr.appendChild(nameCell);
+  function nowTs() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}`;
+  }
 
-        const manchuCell = document.createElement('td');
-        manchuCell.className = 'manchu';
-        manchuCell.textContent = row[2];
-        tr.appendChild(manchuCell);
+  function render() {
+    const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+    const tbody = document.getElementById('tableBody');
 
-        const sijiCell = document.createElement('td');
-        sijiCell.className = 'siji';
-        sijiCell.textContent = row[3];
-        tr.appendChild(sijiCell);
-
-        const typeCell = document.createElement('td');
-        const badge = document.createElement('span');
-        badge.className = 'badge badge-' + row[4];
-        badge.textContent = row[4];
-        typeCell.appendChild(badge);
-        tr.appendChild(typeCell);
-
-        const areaCell = document.createElement('td');
-        areaCell.className = 'area';
-        areaCell.textContent = row[5];
-        tr.appendChild(areaCell);
-
-        tbody.appendChild(tr);
-      });
-      document.getElementById('rowCount').textContent = `共 ${rows.length} 条记录`;
+    if (sorted.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#aaa;padding:32px;font-size:13px;">등록된 항목이 없습니다.</td></tr>`;
+    } else {
+      tbody.innerHTML = sorted.map(e => `
+        <tr>
+          <td class="td-date">${fmtDate(e.date)}</td>
+          <td class="td-content">
+            ${esc(e.title)}
+            ${e.detail ? `<div class="detail">${esc(e.detail)}</div>` : ''}
+          </td>
+          <td class="td-timestamp">${e.timestamp}</td>
+          <td class="td-actions">
+            <button class="btn-edit" onclick="openEdit(${e.id})">수정</button>
+            <button class="btn-del"  onclick="del(${e.id})">삭제</button>
+          </td>
+        </tr>
+      `).join('');
     }
 
-    function applyFilters() {
-      const karun = document.getElementById('filterKarun').value;
-      const type  = document.getElementById('filterType').value;
-      const search = document.getElementById('filterSearch').value.trim().toLowerCase();
+    document.getElementById('rowCount').textContent = `共 ${entries.length} 条记录`;
+  }
 
-      const filtered = data.filter(row => {
-        if (karun && row[0] !== karun) return false;
-        if (type  && row[4] !== type)  return false;
-        if (search && !row.some(cell => cell.toLowerCase().includes(search))) return false;
-        return true;
-      });
-      renderTable(filtered);
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function openModal() {
+    editingId = null;
+    document.getElementById('modalTitle').textContent = '새 작업 로그';
+    document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('fTitle').value = '';
+    document.getElementById('fDetail').value = '';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function openEdit(id) {
+    const e = entries.find(x => x.id === id);
+    if (!e) return;
+    editingId = id;
+    document.getElementById('modalTitle').textContent = '항목 수정';
+    document.getElementById('fDate').value = e.date;
+    document.getElementById('fTitle').value = e.title;
+    document.getElementById('fDetail').value = e.detail || '';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function closeOnBg(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function saveEntry() {
+    const date   = document.getElementById('fDate').value;
+    const title  = document.getElementById('fTitle').value.trim();
+    const detail = document.getElementById('fDetail').value.trim();
+    if (!date || !title) { toast('날짜와 내용 제목을 입력해주세요.'); return; }
+
+    if (editingId !== null) {
+      const idx = entries.findIndex(x => x.id === editingId);
+      if (idx > -1) entries[idx] = { ...entries[idx], date, title, detail };
+      toast('수정되었습니다.');
+    } else {
+      const newId = entries.length ? Math.max(...entries.map(x => x.id)) + 1 : 1;
+      entries.push({ id: newId, date, title, detail, timestamp: nowTs() });
+      toast('추가되었습니다.');
     }
+    save(); closeModal(); render();
+  }
 
-    document.getElementById('filterKarun').addEventListener('change', applyFilters);
-    document.getElementById('filterType').addEventListener('change', applyFilters);
-    document.getElementById('filterSearch').addEventListener('input', applyFilters);
+  function del(id) {
+    if (!confirm('이 항목을 삭제하시겠습니까?')) return;
+    entries = entries.filter(x => x.id !== id);
+    save(); render(); toast('삭제되었습니다.');
+  }
 
-    renderTable(data);
-  </script>
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  load();
+  render();
+</script>
 </body>
 </html>
