@@ -7,7 +7,16 @@
   <link rel="stylesheet" href="./css/site.css" />
   <style>
     html, body { height: 100%; margin: 0; background: #ffffff; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #111; }
-
+    
+    footer{ padding:18px 16px; color:#666; font-size:12px; border-top:1px solid #eee; }
+    .tabs{
+      display:flex;
+      gap:48px;
+      padding: 10px 16px;
+      margin: 0 auto;
+      align-items: center;
+    }
+  
     .topnav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -247,7 +256,7 @@
   <a href="./index.html">Map</a>
   <a href="./gazetteer.html">Gazetteer</a>
   <a href="./reference.html">Reference</a>
-  <a href="./worlog.html">Work Log</a>
+  <a href="./worklog.html">Work Log</a>
 </nav>
 
 <div class="page-body">
@@ -305,6 +314,10 @@
 
 <div class="toast" id="toast"></div>
 
+  <footer>
+    <div class="wrap">© mucenfere</div>
+  </footer>
+  
 <script>
   const STORAGE_KEY = 'worklog_v1';
   let entries = [];
