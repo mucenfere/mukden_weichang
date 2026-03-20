@@ -74,6 +74,29 @@
       text-shadow: 0 0 2px #fff, 0 0 2px #fff;
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
+
+    /* 라벨 숨김 (CSS 방식) */
+    .labels-hidden .leaflet-tooltip.plain-label { display: none !important; }
+
+    /* 라벨 토글 버튼 */
+    .label-toggle-btn {
+      display: block;
+      width: 100%;
+      background: #f0f0ee;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 5px 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #333;
+      text-align: center;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+    .label-toggle-btn:hover { background: #e4e4e0; }
+    .label-toggle-btn.off { background: #fff; color: #aaa; border-color: #ddd; }
     
     .leaflet-tooltip.center-label {
       background: transparent;
@@ -243,47 +266,31 @@
       }[m]));
     }
 
-    // ── 라벨 on/off 관리 ──────────────────────────────────────────────
-    // plain-label 툴팁을 가진 레이어들을 등록해두고 일괄 제어
+    // ── 라벨 on/off (CSS 방식) ────────────────────────────────────────
     let labelsVisible = true;
-    const labelledLayers = []; // { layer, type: 'geoJSON'|'layerGroup' }
 
-    function registerLabelLayer(layer) {
-      labelledLayers.push(layer);
-    }
-
-    function setLabelsVisible(visible) {
-      labelsVisible = visible;
-      labelledLayers.forEach(layer => {
-        // geoJSON 레이어는 eachLayer로 순회
-        if (typeof layer.eachLayer === 'function') {
-          layer.eachLayer(sub => {
-            if (typeof sub.eachLayer === 'function') {
-              // layerGroup 안의 geoJSON
-              sub.eachLayer(l => toggleTooltip(l, visible));
-            } else {
-              toggleTooltip(sub, visible);
-            }
-          });
+    function insertLabelToggle() {
+      const layerBox = document.querySelector('.leaflet-control-layers');
+      if (!layerBox || layerBox.querySelector('.label-toggle-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'label-toggle-btn';
+      btn.textContent = '🏷 라벨 ON';
+      btn.addEventListener('click', () => {
+        labelsVisible = !labelsVisible;
+        if (labelsVisible) {
+          map.getContainer().classList.remove('labels-hidden');
+          btn.textContent = '🏷 라벨 ON';
+          btn.classList.remove('off');
+        } else {
+          map.getContainer().classList.add('labels-hidden');
+          btn.textContent = '🏷 라벨 OFF';
+          btn.classList.add('off');
         }
       });
+      layerBox.insertBefore(btn, layerBox.firstChild);
     }
 
-    function toggleTooltip(l, visible) {
-      if (!l.getTooltip) return;
-      const tt = l.getTooltip();
-      if (!tt) return;
-      // center-label (폴리곤 중앙 라벨)은 건드리지 않음
-      if (tt.options && tt.options.className === 'center-label') return;
-      if (visible) {
-        l.openTooltip();
-      } else {
-        l.closeTooltip();
-      }
-    }
-
-    // 라벨 레이어 더미 (레이어 컨트롤용 빈 레이어그룹)
-    const labelToggleLayer = L.layerGroup();
+    // 라벨 레이어 더미 (레이어 컨트롤용 — 이제 불필요하므로 제거)
 
     // ── 선택 강조 관리 ────────────────────────────────────────────────
     let selectedLayer = null;
@@ -415,7 +422,6 @@
         }
       });
 
-      if (options.label === true) registerLabelLayer(layer);
       return layer;
     }
 
@@ -597,7 +603,6 @@
             });
           }
         });
-        registerLabelLayer(layer);
         return layer;
       }
 
@@ -632,7 +637,6 @@
             });
           }
         });
-        registerLabelLayer(layer);
         return layer;
       }
       
@@ -683,7 +687,6 @@
           });
         }
       });
-      registerLabelLayer(jq_weichang);
 
       const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
       const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
@@ -706,7 +709,6 @@
       const giyamun_pt = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_giyamun_pt.geojson',
         mkIconPt(icon_giyamun, { label: true })
       );
-      registerLabelLayer(giyamun_pt);
       
       const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
       const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_kxyz.geojson',
@@ -728,11 +730,8 @@
       const wcKarun_bundle = L.layerGroup(Object.values(wcKarunLayers));
       
       // 라벨 토글 레이어를 지도에 추가 (기본 on)
-      labelToggleLayer.addTo(map);
 
       const groupedOverlays = {
-        "표시 설정": {
-          "지명 라벨 표시": labelToggleLayer,
         },
         "기본지리정보": {
           "성경장군 관할 경계선": admin_v1,
@@ -775,19 +774,12 @@
       }).addTo(map);
 
       wcTypeLayers['盛京圍場'].bringToFront();
-      map.on('overlayadd', (e) => {
+      map.on('overlayadd', () => {
         wcTypeLayers['盛京圍場'].bringToFront();
-        // 라벨 토글 레이어가 추가되면 → 라벨 켜기
-        if (e.layer === labelToggleLayer) {
-          setLabelsVisible(true);
-        }
       });
-      map.on('overlayremove', (e) => {
-        // 라벨 토글 레이어가 제거되면 → 라벨 끄기
-        if (e.layer === labelToggleLayer) {
-          setLabelsVisible(false);
-        }
-      });
+
+      // 레이어 컨트롤 렌더링 후 버튼 삽입
+      insertLabelToggle();
 
     })().catch(err => {
       console.error(err);
