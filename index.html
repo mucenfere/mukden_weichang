@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-YWD860LFFR');
 </script>
 
@@ -25,7 +24,6 @@
   <style>
     html, body { height: 100%; margin: 0; overflow: hidden; }
 
-    /* Top nav */
     .topnav{
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -40,33 +38,30 @@
     }
     .topnav a{ text-decoration:none; color:#111; font-weight:600; }
 
-/* lv1, lv2: 아이콘 */
-.admin-dot{
-  width: 6px; height: 6px; 
-  border-radius: 50%;
-  background: #004eff; 
-  border: 0; 
-  box-shadow: none; 
-}
+    .admin-dot{
+      width: 6px; height: 6px; 
+      border-radius: 50%;
+      background: #004eff; 
+      border: 0; 
+      box-shadow: none; 
+    }
     
-/* 삼각형 라벨 */
     .tri {
-  width: 14px;
-  height: 14px;
-  background: var(--tri, #d62728);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  border: 1px solid rgba(0,0,0,0.75);
-  box-sizing: border-box;
-  filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
-}
+      width: 14px;
+      height: 14px;
+      background: var(--tri, #d62728);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      border: 1px solid rgba(0,0,0,0.75);
+      box-sizing: border-box;
+      filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
+    }
     
-#map{
-  width: 100%;
-  height: calc(100% - 44px);
-  margin-top: 44px;
-}
+    #map{
+      width: 100%;
+      height: calc(100% - 44px);
+      margin-top: 44px;
+    }
 
-/* Tooltip labels */
     .leaflet-tooltip.plain-label{
       background: transparent;
       border: none;
@@ -80,127 +75,116 @@
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
     
-.leaflet-tooltip.center-label {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-  color: #000000;
-  font-size: 30px;
-  font-weight: 1000;
-  text-shadow:
-    0 0 3px #ffffff,
-    0 0 6px #ffffff,
-    0 0 10px #ffffff;
-}
-.leaflet-tooltip.center-label:before { display: none !important; }
+    .leaflet-tooltip.center-label {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      color: #000000;
+      font-size: 30px;
+      font-weight: 1000;
+      text-shadow:
+        0 0 3px #ffffff,
+        0 0 6px #ffffff,
+        0 0 10px #ffffff;
+    }
+    .leaflet-tooltip.center-label:before { display: none !important; }
     
-/* Make layers control scroll internally (not whole page) */
-.leaflet-control-layers{
+    .leaflet-control-layers{
       max-height: calc(100vh - 60px);
       overflow: hidden;
+      min-width: 220px;
     }    
-.leaflet-control-layers-overlays{
+    .leaflet-control-layers-overlays{
       max-height: calc(100vh - 140px);
       overflow-y: auto;
       overflow-x: hidden;
       padding-right: 6px;
     }
 
-/* 레이어바의 너비 조절 */
-  .leaflet-control-layers {
-  max-height: calc(100vh - 60px);
-  overflow: hidden;
-  min-width: 220px;
-}
+    .leaflet-control-layers-group-label {
+      padding-left: 0 !important;
+    }
 
-/* 그룹명 행: 들여쓰기 없음 */
-.leaflet-control-layers-group-label {
-  padding-left: 0 !important;
-}
+    .leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
+      padding-left: 16px;
+      display: block;
+    }
 
-/* 하위 레이어: 들여쓰기 */
-.leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
-  padding-left: 16px;
-  display: block;
-}
-/*그룹명 폰트*/
-.leaflet-control-layers-group-name {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  margin-top: 10px;
-  margin-bottom: 6px;
-  padding-left: 0;
-}
+    .leaflet-control-layers-group-name {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding-left: 0;
+    }
    
-.info-panel{
-  position: fixed;
-  top: 44px;
-  left: 0;        
-  right: auto;    
-  width: 360px;
-  height: calc(100vh - 44px);
-  background: rgba(255,255,255,0.98);
-  border-right: 1px solid #ddd; 
-  border-left: none;
-  z-index: 1200;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 6px 0 20px rgba(0,0,0,0.08); 
-}
+    .info-panel{
+      position: fixed;
+      top: 44px;
+      left: 0;        
+      right: auto;    
+      width: 360px;
+      height: calc(100vh - 44px);
+      background: rgba(255,255,255,0.98);
+      border-right: 1px solid #ddd; 
+      border-left: none;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 6px 0 20px rgba(0,0,0,0.08); 
+    }
 
-.info-panel.hidden{ display:none; }
+    .info-panel.hidden{ display:none; }
 
-.info-head{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-}
-.info-title{ font-weight: 800; }
-.info-close{
-  font-size: 22px;
-  line-height: 22px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
+    .info-head{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    .info-title{ font-weight: 800; }
+    .info-close{
+      font-size: 22px;
+      line-height: 22px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
 
-.info-body{
-  padding: 10px 12px;
-  overflow: auto;
-  font-size: 13px;
-}
+    .info-body{
+      padding: 10px 12px;
+      overflow: auto;
+      font-size: 13px;
+    }
 
-.info-body table{ width:100%; border-collapse: collapse; }
-.info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
-.info-body td{ padding:4px 0; word-break: break-word; }
+    .info-body table{ width:100%; border-collapse: collapse; }
+    .info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
+    .info-body td{ padding:4px 0; word-break: break-word; }
 
-.marker-selected-png {
-  filter: drop-shadow(0 0 4px #00ffff) drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 16px #00ffff) !important;
-  transform: scale(1.2);
-  transform-origin: center;
-}
+    .marker-selected-png {
+      filter: drop-shadow(0 0 4px #00ffff) drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 16px #00ffff) !important;
+      transform: scale(1.2);
+      transform-origin: center;
+    }
 
-/* div 아이콘 선택 강조 (admin-dot, 삼각형) */
-.marker-selected-div > div {
-  transform: scale(1.2);
-  transform-origin: center;
-}
-.marker-selected-div .admin-dot {
-  background: #00ffff !important;
-  width: 10px !important;
-  height: 10px !important;
-}
-.marker-selected-div .tri {
-  --tri: #00ffff !important;
-  width: 14px !important;
-  height: 14px !important;
-}
-
+    .marker-selected-div > div {
+      transform: scale(1.2);
+      transform-origin: center;
+    }
+    .marker-selected-div .admin-dot {
+      background: #00ffff !important;
+      width: 10px !important;
+      height: 10px !important;
+    }
+    .marker-selected-div .tri {
+      --tri: #00ffff !important;
+      width: 14px !important;
+      height: 14px !important;
+    }
   </style>
 </head>
 
@@ -215,131 +199,166 @@
 
   <div id="map"></div>
   <div id="infoPanel" class="info-panel hidden">
-  <div class="info-head">
-    <div id="infoTitle" class="info-title">정보</div>
-    <button id="infoClose" class="info-close" type="button">×</button>
+    <div class="info-head">
+      <div id="infoTitle" class="info-title">정보</div>
+      <button id="infoClose" class="info-close" type="button">×</button>
+    </div>
+    <div id="infoBody" class="info-body"></div>
   </div>
-  <div id="infoBody" class="info-body"></div>
-</div>
 
   <script>
     const map = L.map('map').setView([42.6, 125.2], 9);
     map.on('click', (e) => {
-  if (e.originalEvent._stopped) return;
-  highlightLayer(null);
-  closeInfoPanel();
-});
+      if (e.originalEvent._stopped) return;
+      highlightLayer(null);
+      closeInfoPanel();
+    });
     
     const mkDivIcon = (className, size) => L.divIcon({
-  className: '',
-  html: `<div class="${className}"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size/2, size/2],
-  popupAnchor: [0, -size/2]
-});
-const oms = new OverlappingMarkerSpiderfier(map, {
-  keepSpiderfied: true,  
-  nearbyDistance: 20,    
-  legWeight: 1.2
-});
-    
-    
-const icon_admin = mkDivIcon('admin-dot', 10);
-    
-const panel = document.getElementById('infoPanel');
-L.DomEvent.disableClickPropagation(panel);
-L.DomEvent.disableScrollPropagation(panel);
-const infoTitleEl = document.getElementById('infoTitle');
-const infoBodyEl  = document.getElementById('infoBody');
-const infoCloseEl = document.getElementById('infoClose');
+      className: '',
+      html: `<div class="${className}"></div>`,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+      popupAnchor: [0, -size/2]
+    });
 
-function escapeHtml(s){
-  return String(s ?? '').replace(/[&<>"']/g, (m)=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-  }[m]));
-}
+    const oms = new OverlappingMarkerSpiderfier(map, {
+      keepSpiderfied: true,  
+      nearbyDistance: 20,    
+      legWeight: 1.2
+    });
 
-// 선택 강조 관리
-let selectedLayer = null;
-let selectedOriginalStyle = null;
+    const icon_admin = mkDivIcon('admin-dot', 10);
+    
+    const panel = document.getElementById('infoPanel');
+    L.DomEvent.disableClickPropagation(panel);
+    L.DomEvent.disableScrollPropagation(panel);
+    const infoTitleEl = document.getElementById('infoTitle');
+    const infoBodyEl  = document.getElementById('infoBody');
+    const infoCloseEl = document.getElementById('infoClose');
 
-function highlightLayer(layer) {
-  // 이전 선택 해제
-  if (selectedLayer) {
-    if (selectedOriginalStyle) {
-      selectedLayer.setStyle(selectedOriginalStyle);
-      selectedOriginalStyle = null;
+    function escapeHtml(s){
+      return String(s ?? '').replace(/[&<>"']/g, (m)=>({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[m]));
     }
-    if (selectedLayer._centerLabel) {
-      selectedLayer._centerLabel.remove();
-      selectedLayer._centerLabel = null;
+
+    // ── 라벨 on/off 관리 ──────────────────────────────────────────────
+    // plain-label 툴팁을 가진 레이어들을 등록해두고 일괄 제어
+    let labelsVisible = true;
+    const labelledLayers = []; // { layer, type: 'geoJSON'|'layerGroup' }
+
+    function registerLabelLayer(layer) {
+      labelledLayers.push(layer);
     }
-    if (selectedLayer._selectedEl) {
-      selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
-      selectedLayer._selectedEl = null;
+
+    function setLabelsVisible(visible) {
+      labelsVisible = visible;
+      labelledLayers.forEach(layer => {
+        // geoJSON 레이어는 eachLayer로 순회
+        if (typeof layer.eachLayer === 'function') {
+          layer.eachLayer(sub => {
+            if (typeof sub.eachLayer === 'function') {
+              // layerGroup 안의 geoJSON
+              sub.eachLayer(l => toggleTooltip(l, visible));
+            } else {
+              toggleTooltip(sub, visible);
+            }
+          });
+        }
+      });
     }
-    selectedLayer = null;
-  }
 
-  if (!layer) return;
-  selectedLayer = layer;
+    function toggleTooltip(l, visible) {
+      if (!l.getTooltip) return;
+      const tt = l.getTooltip();
+      if (!tt) return;
+      // center-label (폴리곤 중앙 라벨)은 건드리지 않음
+      if (tt.options && tt.options.className === 'center-label') return;
+      if (visible) {
+        l.openTooltip();
+      } else {
+        l.closeTooltip();
+      }
+    }
 
-  // L.Marker
-  if (layer instanceof L.Marker) {
-    const el = layer.getElement();
-    if (!el) return;
-    const isPng = layer.options?.icon instanceof L.Icon && !(layer.options?.icon instanceof L.DivIcon);
-    const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
-    el.classList.add(cls);
-    layer._selectedEl = el;
-    return;
-  }
+    // 라벨 레이어 더미 (레이어 컨트롤용 빈 레이어그룹)
+    const labelToggleLayer = L.layerGroup();
 
-  // L.CircleMarker
-  if (layer instanceof L.CircleMarker) {
-    selectedOriginalStyle = {
-      color: layer.options.color,
-      weight: layer.options.weight,
-      fillColor: layer.options.fillColor,
-      fillOpacity: layer.options.fillOpacity,
-      radius: layer.options.radius,
-    };
-    layer.setStyle({ color: '#00ffff', fillColor: '#00ffff', fillOpacity: 1, weight: 2 });
-    layer.setRadius(4);
-    return;
-  }
+    // ── 선택 강조 관리 ────────────────────────────────────────────────
+    let selectedLayer = null;
+    let selectedOriginalStyle = null;
 
-  // L.Polyline / L.Polygon
-  if (layer instanceof L.Path) {
-    selectedOriginalStyle = {
-      color: layer.options.color,
-      weight: layer.options.weight,
-      opacity: layer.options.opacity,
-      fillOpacity: layer.options.fillOpacity,
-    };
-    layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.25 });
-layer.bringToFront();
-if (typeof wcTypeLayers !== 'undefined' && wcTypeLayers['盛京圍場']) {
-  wcTypeLayers['盛京圍場'].bringToFront();
-}
-    const center = layer.getBounds().getCenter();
-  }
-}
+    function highlightLayer(layer) {
+      if (selectedLayer) {
+        if (selectedOriginalStyle) {
+          selectedLayer.setStyle(selectedOriginalStyle);
+          selectedOriginalStyle = null;
+        }
+        if (selectedLayer._centerLabel) {
+          selectedLayer._centerLabel.remove();
+          selectedLayer._centerLabel = null;
+        }
+        if (selectedLayer._selectedEl) {
+          selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
+          selectedLayer._selectedEl = null;
+        }
+        selectedLayer = null;
+      }
+
+      if (!layer) return;
+      selectedLayer = layer;
+
+      if (layer instanceof L.Marker) {
+        const el = layer.getElement();
+        if (!el) return;
+        const isPng = layer.options?.icon instanceof L.Icon && !(layer.options?.icon instanceof L.DivIcon);
+        const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
+        el.classList.add(cls);
+        layer._selectedEl = el;
+        return;
+      }
+
+      if (layer instanceof L.CircleMarker) {
+        selectedOriginalStyle = {
+          color: layer.options.color,
+          weight: layer.options.weight,
+          fillColor: layer.options.fillColor,
+          fillOpacity: layer.options.fillOpacity,
+          radius: layer.options.radius,
+        };
+        layer.setStyle({ color: '#00ffff', fillColor: '#00ffff', fillOpacity: 1, weight: 2 });
+        layer.setRadius(4);
+        return;
+      }
+
+      if (layer instanceof L.Path) {
+        selectedOriginalStyle = {
+          color: layer.options.color,
+          weight: layer.options.weight,
+          opacity: layer.options.opacity,
+          fillOpacity: layer.options.fillOpacity,
+        };
+        layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.25 });
+        layer.bringToFront();
+        if (typeof wcTypeLayers !== 'undefined' && wcTypeLayers['盛京圍場']) {
+          wcTypeLayers['盛京圍場'].bringToFront();
+        }
+        const center = layer.getBounds().getCenter();
+      }
+    }
     
-function openInfoPanel(title, props){
-  infoTitleEl.textContent = title || '정보';
-
-  const rows = Object.entries(props || {})
-    .map(([k,v]) => `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`)
-    .join('');
-
-  infoBodyEl.innerHTML = `<table>${rows}</table>`;
-
-  panel.classList.remove('hidden');
-}
-function closeInfoPanel(){
-  panel.classList.add('hidden');
-}
+    function openInfoPanel(title, props){
+      infoTitleEl.textContent = title || '정보';
+      const rows = Object.entries(props || {})
+        .map(([k,v]) => `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`)
+        .join('');
+      infoBodyEl.innerHTML = `<table>${rows}</table>`;
+      panel.classList.remove('hidden');
+    }
+    function closeInfoPanel(){
+      panel.classList.add('hidden');
+    }
     if (infoCloseEl) infoCloseEl.addEventListener('click', closeInfoPanel);
     
     // Basemaps
@@ -359,404 +378,348 @@ function closeInfoPanel(){
     );
 
     satellite.addTo(map);
-      const baseLayers = {
-        "위성": satellite, 
-        "OSM": osm
-      };
+    const baseLayers = {
+      "위성": satellite, 
+      "OSM": osm
+    };
 
-    // Styles
     const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
 
-async function loadGeoJSON(url, options = {}) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
-  const gj = await res.json();
+    async function loadGeoJSON(url, options = {}) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+      const gj = await res.json();
 
-  return L.geoJSON(gj, {
-    style: options.style,
-    pointToLayer: options.pointToLayer,
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.name || p.NAME_FT || '정보';
+      const layer = L.geoJSON(gj, {
+        style: options.style,
+        pointToLayer: options.pointToLayer,
+        onEachFeature: (feature, l) => {
+          const p = feature.properties || {};
+          const labelText = p.name_chf || p.name || p.NAME_FT || '정보';
 
-      if (options.label === true) {
-        layer.bindTooltip(labelText, {
-          permanent: true,
-          direction: 'top',
-          offset: [0, -6],
-          opacity: 1,
-          className: 'plain-label'
-        });
-      }
+          if (options.label === true) {
+            l.bindTooltip(labelText, {
+              permanent: true,
+              direction: 'top',
+              offset: [0, -6],
+              opacity: 1,
+              className: 'plain-label'
+            });
+          }
 
-layer.on('click', (e) => {
-  L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p);
-});
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            highlightLayer(l);
+            openInfoPanel(labelText, p);
+          });
+        }
+      });
+
+      if (options.label === true) registerLabelLayer(layer);
+      return layer;
     }
-  });
-}
+
     (async () => {
       
-// ── 성경위장 폴리곤: 유형별 + 카룬별 레이어 ──────────────────────────
-// 색상 팔레트
-const WC_TYPE_COLORS = {
-  '王多羅樹圍':   '#ff7f00',
-  '演武圍':       '#984ea3',
-  '鮮圍':         '#e41a1c',
-};
+      const WC_TYPE_COLORS = {
+        '王多羅樹圍':   '#ff7f00',
+        '演武圍':       '#984ea3',
+        '鮮圍':         '#e41a1c',
+      };
 
-const WC_KARUN_COLORS = {
-  '臺必拉卡倫':   '#1b9e77',
-  '西巴拉河卡倫': '#d95f02',
-  '大荒溝卡倫':   '#7570b3',
-  '蒙古霍羅卡倫': '#e7298a',
-  '雙榆樹卡倫':   '#66a61e',
-  '孤山河卡倫':   '#e6ab02',
-  '歸勒哈卡倫':   '#a6761d',
-  '克爾蘇卡倫':   '#666666',
-  '那丹伯卡倫':   '#1f78b4',
-  '大沙河卡倫':   '#b2df8a',
-  '梅河卡倫':     '#fb9a99',
-  '土口子卡倫':   '#cab2d6',
-};
+      const WC_KARUN_COLORS = {
+        '臺必拉卡倫':   '#1b9e77',
+        '西巴拉河卡倫': '#d95f02',
+        '大荒溝卡倫':   '#7570b3',
+        '蒙古霍羅卡倫': '#e7298a',
+        '雙榆樹卡倫':   '#66a61e',
+        '孤山河卡倫':   '#e6ab02',
+        '歸勒哈卡倫':   '#a6761d',
+        '克爾蘇卡倫':   '#666666',
+        '那丹伯卡倫':   '#1f78b4',
+        '大沙河卡倫':   '#b2df8a',
+        '梅河卡倫':     '#fb9a99',
+        '土口子卡倫':   '#cab2d6',
+      };
 
-//카룬
-async function fetchGeoJSON(url){
-     const res = await fetch(url);
-     if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
-     return await res.json();
-     }
-    const karunAll = await fetchGeoJSON('https://mucenfere.github.io/mukden_karun/data/karun_all.geojson');
+      async function fetchGeoJSON(url){
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+        return await res.json();
+      }
+
+      const karunAll = await fetchGeoJSON('https://mucenfere.github.io/mukden_karun/data/karun_all.geojson');
+      const wcPgGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pg.geojson');
+
+      function makeWcLayer(features, color, styleOverride = {}) {
+        return L.geoJSON(
+          { type: 'FeatureCollection', features },
+          {
+            style: {
+              color,
+              weight: 2,
+              opacity: 0.9,
+              fillColor: color,
+              fillOpacity: 0.25,
+              ...styleOverride,
+            },
+            onEachFeature: (feature, layer) => {
+              const p = feature.properties || {};
+              const label = p.name_chf || '정보';
+              
+              if (label !== '盛京圍場' && !styleOverride.noLabel) {
+                layer.bindTooltip(label, {
+                  permanent: true,
+                  direction: 'center',
+                  className: 'center-label'  // ← 항상 표시, 라벨 on/off 대상 아님
+                });
+              }
+
+              layer.on('click', (e) => {
+                L.DomEvent.stopPropagation(e);
+                if (label !== '盛京圍場') highlightLayer(layer);
+                openInfoPanel(label, p);
+              });
+            },
+          }
+        );
+      }
+
+      const TYPE_NAMES = ['王多羅樹圍', '演武圍', '鮮圍'];
+      const wcTypeLayers = {};
+      for (const name of TYPE_NAMES) {
+        const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
+        const color = WC_TYPE_COLORS[name] || '#ff7a00';
+        wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.25 });
+      }
+      wcTypeLayers['盛京圍場'] = makeWcLayer(
+        wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
+        null,
+        { color: '#ffffff', weight: 3, opacity: 1, fillOpacity: 0, interactive: false }
+      );
       
-// GeoJSON을 직접 fetch해서 feature별로 분류
-const wcPgGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pg.geojson');
+      const KARUN_NAMES = [
+        '臺必拉卡倫', '西巴拉河卡倫', '大荒溝卡倫', '蒙古霍羅卡倫',
+        '雙榆樹卡倫', '孤山河卡倫', '歸勒哈卡倫', '克爾蘇卡倫',
+        '那丹伯卡倫', '大沙河卡倫', '梅河卡倫', '土口子卡倫',
+      ];
 
-// 공통 레이어 생성 함수
-function makeWcLayer(features, color, styleOverride = {}) {
-  return L.geoJSON(
-    { type: 'FeatureCollection', features },
-    {
-      style: {
-        color,
-        weight: 2,
-        opacity: 0.9,
-        fillColor: color,
-        fillOpacity: 0.25,
-        ...styleOverride,   // ← 오버라이드 적용
-      },
-onEachFeature: (feature, layer) => {
-  const p = feature.properties || {};
-  const label = p.name_chf || '정보';
-  
-if (label !== '盛京圍場' && !styleOverride.noLabel) {
-  layer.bindTooltip(label, {
-    permanent: true,
-    direction: 'center',
-    className: 'center-label'
-  });
-}
+      const wcKarunLayers = {};
+      for (const name of KARUN_NAMES) {
+        const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
+        const color = WC_KARUN_COLORS[name] || '#aaaaaa';
+        wcKarunLayers[name] = makeWcLayer(features, color, { noLabel: true });
+      }
 
-  layer.on('click', (e) => {
-    L.DomEvent.stopPropagation(e);
-    if (label !== '盛京圍場') highlightLayer(layer);
-    openInfoPanel(label, p);
-  });
-},
-    }
-  );
-}
-
-// ── 유형별 분류 ──
-const TYPE_NAMES = ['王多羅樹圍', '演武圍', '鮮圍'];
-
-const wcTypeLayers = {};
-for (const name of TYPE_NAMES) {
-  const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
-  const color = WC_TYPE_COLORS[name] || '#ff7a00';
-  wcTypeLayers[name] = makeWcLayer(features, color, { fillOpacity: 0.25 });
-}
-wcTypeLayers['盛京圍場'] = makeWcLayer(
-  wcPgGeoJSON.features.filter(f => f.properties.name_chf === '盛京圍場'),
-  null,
-  {
-    color: '#ffffff',
-    weight: 3,
-    opacity: 1,
-    fillOpacity: 0,
-    interactive: false,
-  }
-);
-      
-// ── 카룬별 분류 ──
-const KARUN_NAMES = [
-  '臺必拉卡倫', '西巴拉河卡倫', '大荒溝卡倫', '蒙古霍羅卡倫',
-  '雙榆樹卡倫', '孤山河卡倫', '歸勒哈卡倫', '克爾蘇卡倫',
-  '那丹伯卡倫', '大沙河卡倫', '梅河卡倫', '土口子卡倫',
-];
-
-const wcKarunLayers = {};
-for (const name of KARUN_NAMES) {
-  const features = wcPgGeoJSON.features.filter(f => f.properties.name_chf === name);
-  const color = WC_KARUN_COLORS[name] || '#aaaaaa';
-  wcKarunLayers[name] = makeWcLayer(features, color, { noLabel: true });
-}    
-      
-      // 국경선 백색 라인
       const bordersWhite = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/borders.geojson', {
-          style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
-       });
+        style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
+      });
       const bordersLayer = L.layerGroup([bordersWhite]).addTo(map);
       
-      // CHGIS
       const chgisprov_pgn = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
       const chgispref_pgn = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_pref_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
       const chgispref_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_pref_pts.geojson', { 
-                label: true,
-        pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-          radius: 2,
-          color: '#000000',
-          weight: 1,
-          fillColor: '#000000',
-          fillOpacity: 1
-        })
-      });
-        const chgistwn_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_twn_pts.geojson', {
         label: true,
         pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-          radius: 2,
-          color: '#000000',
-          weight: 1,
-          fillColor: '#000000',
-          fillOpacity: 1
+          radius: 2, color: '#000000', weight: 1, fillColor: '#000000', fillOpacity: 1
+        })
+      });
+      const chgistwn_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/v6_1820_twn_pts.geojson', {
+        label: true,
+        pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+          radius: 2, color: '#000000', weight: 1, fillColor: '#000000', fillOpacity: 1
         })
       });
 
-      //png icon
-
-const icon_wp_gate = L.icon({
-  iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/willowgateicon.png',
-  iconSize: [10, 10],
-  iconAnchor: [9, 9],
-  popupAnchor: [0, -9]
-});
-const icon_giyamun = L.icon({
-  iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/giyamunicon.png',
-  iconSize: [10, 10],
-  iconAnchor: [9, 9],
-  popupAnchor: [0, -9]
-});   
-const icon_jq_weichang = L.icon({
-  iconUrl: './data/img/tower-control.png',
-  iconSize: [24, 24],
-  iconAnchor: [8, 8],
-  popupAnchor: [0, -8]
-});
-
-//카룬의 필터
-function zoneType(zoneStr){
-  const z = String(zoneStr || '').toLowerCase();
-  if (z.includes('변대') || z.includes(' tai')) return 'tai';
-  if (z.includes('변내') || z.includes('dorgi')) return 'dorgi';
-  if (z.includes('변외') || z.includes('tulergi')) return 'tulergi';
-  if (z.includes('위장') || z.includes('aba')) return 'aba';
-  return 'unknown';
-}
-
-// Triangle icon factory (no PNG)
-const mkTriIcon = (color, size = 10) => L.divIcon({
-  className: '', // Leaflet
-  html: `<div class="tri" style="--tri:${color}; width:${size}px; height:${size}px;"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size / 2, size / 2], 
-  popupAnchor: [0, -size / 2]
-});
-
-// GeoJSON point options using triangle marker
-const mkTriPt = (color, { size = 10, label = false } = {}) => ({
-  label,
-  pointToLayer: (f, latlng) => L.marker(latlng, { icon: mkTriIcon(color, size) })
-});
-
-// 위장_포인트
-const wcPtGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pt.geojson');
-
-// 아이콘 팩토리
-const mkCircleIcon = (color, size = 10) => L.divIcon({
-  className: '',
-  html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.6);box-sizing:border-box;"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size/2, size/2],
-});
-
-// 하위 레이어 생성 함수
-function makeWcPtLayer(gj, kind, icon) {
-  return L.geoJSON(gj, {
-    filter: f => f.properties?.['종류'] === kind,
-    pointToLayer: (f, latlng) => {
-      const marker = L.marker(latlng, { icon });
-      oms.addMarker(marker);
-      return marker;
-    },
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.name || '정보';
-      layer.bindTooltip(labelText, {
-        permanent: true, direction: 'top', offset: [0, -6],
-        opacity: 1, className: 'plain-label'
+      const icon_wp_gate = L.icon({
+        iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/willowgateicon.png',
+        iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
       });
-      layer.on('click', (e) => {
-        L.DomEvent.stopPropagation(e);
-        highlightLayer(layer);
-        openInfoPanel(labelText, p);
-      });
-    }
-  });
-}
-
-const wc_pt_演武圍    = makeWcPtLayer(wcPtGeoJSON, '演武圍',    mkTriIcon('#cc44ff', 10));
-const wc_pt_王多羅樹圍 = makeWcPtLayer(wcPtGeoJSON, '王多羅樹圍', mkCircleIcon('#ff9900', 10));
-const wc_pt_鮮圍      = makeWcPtLayer(wcPtGeoJSON, '鮮圍',      mkTriIcon('#ff2222', 10));
-const wc_pt_御圍      = makeWcPtLayer(wcPtGeoJSON, '御圍',      mkTriIcon('#ff9900', 10));
-
-// 기본 표시
-wc_pt_演武圍.addTo(map);
-wc_pt_王多羅樹圍.addTo(map);
-wc_pt_鮮圍.addTo(map);
-wc_pt_御圍.addTo(map);
-      
-function makeKarunLayer(gj, { time, ztype, color }) {
-  return L.geoJSON(gj, {
-    filter: (f) => {
-      const p = f.properties || {};
-      return p.time === time && zoneType(p.zone) === ztype;
-    },
-    pointToLayer: mkTriPt(color).pointToLayer,
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.NAME_FT || '정보';
-      layer.bindTooltip(labelText, {
-        permanent: true,
-        direction: 'top',
-        offset: [0, -6],
-        opacity: 1,
-        className: 'plain-label'
+      const icon_giyamun = L.icon({
+        iconUrl: 'https://mucenfere.github.io/mukden_karun/data/img/giyamunicon.png',
+        iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
+      });   
+      const icon_jq_weichang = L.icon({
+        iconUrl: './data/img/tower-control.png',
+        iconSize: [24, 24], iconAnchor: [8, 8], popupAnchor: [0, -8]
       });
 
-      if (typeof openInfoPanel === 'function') {
-layer.on('click', (e) => {
-  L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p); 
-});
+      function zoneType(zoneStr){
+        const z = String(zoneStr || '').toLowerCase();
+        if (z.includes('변대') || z.includes(' tai')) return 'tai';
+        if (z.includes('변내') || z.includes('dorgi')) return 'dorgi';
+        if (z.includes('변외') || z.includes('tulergi')) return 'tulergi';
+        if (z.includes('위장') || z.includes('aba')) return 'aba';
+        return 'unknown';
       }
-    }
-  });
-}
+
+      const mkTriIcon = (color, size = 10) => L.divIcon({
+        className: '',
+        html: `<div class="tri" style="--tri:${color}; width:${size}px; height:${size}px;"></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2], 
+        popupAnchor: [0, -size / 2]
+      });
+
+      const mkTriPt = (color, { size = 10, label = false } = {}) => ({
+        label,
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon: mkTriIcon(color, size) })
+      });
+
+      const wcPtGeoJSON = await fetchGeoJSON('./data/mukden_weichang_pt.geojson');
+
+      const mkCircleIcon = (color, size = 10) => L.divIcon({
+        className: '',
+        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.6);box-sizing:border-box;"></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2],
+      });
+
+      function makeWcPtLayer(gj, kind, icon) {
+        const layer = L.geoJSON(gj, {
+          filter: f => f.properties?.['종류'] === kind,
+          pointToLayer: (f, latlng) => {
+            const marker = L.marker(latlng, { icon });
+            oms.addMarker(marker);
+            return marker;
+          },
+          onEachFeature: (feature, l) => {
+            const p = feature.properties || {};
+            const labelText = p.name_chf || p.name || '정보';
+            l.bindTooltip(labelText, {
+              permanent: true, direction: 'top', offset: [0, -6],
+              opacity: 1, className: 'plain-label'
+            });
+            l.on('click', (e) => {
+              L.DomEvent.stopPropagation(e);
+              highlightLayer(l);
+              openInfoPanel(labelText, p);
+            });
+          }
+        });
+        registerLabelLayer(layer);
+        return layer;
+      }
+
+      const wc_pt_演武圍    = makeWcPtLayer(wcPtGeoJSON, '演武圍',    mkTriIcon('#cc44ff', 10));
+      const wc_pt_王多羅樹圍 = makeWcPtLayer(wcPtGeoJSON, '王多羅樹圍', mkCircleIcon('#ff9900', 10));
+      const wc_pt_鮮圍      = makeWcPtLayer(wcPtGeoJSON, '鮮圍',      mkTriIcon('#ff2222', 10));
+      const wc_pt_御圍      = makeWcPtLayer(wcPtGeoJSON, '御圍',      mkTriIcon('#ff9900', 10));
+
+      wc_pt_演武圍.addTo(map);
+      wc_pt_王多羅樹圍.addTo(map);
+      wc_pt_鮮圍.addTo(map);
+      wc_pt_御圍.addTo(map);
       
-  const mkIconPt = (icon, { label = false } = {}) => ({
-    label,
-    pointToLayer: (f, latlng) => L.marker(latlng, { icon })
-  });
+      function makeKarunLayer(gj, { time, ztype, color }) {
+        const layer = L.geoJSON(gj, {
+          filter: (f) => {
+            const p = f.properties || {};
+            return p.time === time && zoneType(p.zone) === ztype;
+          },
+          pointToLayer: mkTriPt(color).pointToLayer,
+          onEachFeature: (feature, l) => {
+            const p = feature.properties || {};
+            const labelText = p.name_chf || p.NAME_FT || '정보';
+            l.bindTooltip(labelText, {
+              permanent: true, direction: 'top', offset: [0, -6],
+              opacity: 1, className: 'plain-label'
+            });
+            l.on('click', (e) => {
+              L.DomEvent.stopPropagation(e);
+              highlightLayer(l);
+              openInfoPanel(labelText, p); 
+            });
+          }
+        });
+        registerLabelLayer(layer);
+        return layer;
+      }
       
-// 카룬 아이콘 색깔
-const dk_KX = '#00A2FF'; // 밝은 스카이블루
-const tk_KX = '#FFD400'; // 밝은 옐로(블루 보색)
-
-const dk_YZ = '#B000FF'; // 선명 퍼플
-const tk_YZ = '#7CFF00'; // 라임 그린(퍼플 보색)
-
-const dk_QL = '#00E676'; // 밝은 그린(민트 계열)
-const tk_QL = '#FF4DFF'; // 밝은 마젠타(그린 보색)
-
-const dk_JQ = '#FF8C00'; // 밝은 오렌지(빨강 아님)
-const tk_JQ = '#00E5FF'; // 밝은 시안(오렌지 대비)
+      const mkIconPt = (icon, { label = false } = {}) => ({
+        label,
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon })
+      });
       
-const JQWC  = '#005CFF'; // 코발트 블루(시안/오렌지와 구분, 위성에서 강함)
+      const dk_KX = '#00A2FF'; const tk_KX = '#FFD400';
+      const dk_YZ = '#B000FF'; const tk_YZ = '#7CFF00';
+      const dk_QL = '#00E676'; const tk_QL = '#FF4DFF';
+      const dk_JQ = '#FF8C00'; const tk_JQ = '#00E5FF';
+      const JQWC  = '#005CFF';
+      const dk_DG = '#6A00FF'; const tk_DG = '#00FFC8';
 
-const dk_DG = '#6A00FF'; // 진한 바이올렛(퍼플 계열이지만 YZ보다 더 푸른 톤)
-const tk_DG = '#00FFC8'; // 밝은 민트/아쿠아(바이올렛과 대비, 노랑과 겹침 없음)
-
-// 변대(tai)
-const kx_tai = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai', color: dk_KX });
+      const kx_tai     = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai',     color: dk_KX });
+      const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
       
-// 강희: 변대(tai) + 변외(tulergi)
-const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
+      const yz_dorgi   = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'dorgi',   color: dk_YZ });
+      const yz_tulergi = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'tulergi', color: tk_YZ });
+      const karun_yz_bundle = L.layerGroup([yz_dorgi, yz_tulergi]);
+
+      const ql_dorgi   = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'dorgi',   color: dk_QL });
+      const ql_tulergi = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'tulergi', color: tk_QL });
+      const karun_ql_bundle = L.layerGroup([ql_dorgi, ql_tulergi]);
+
+      const jq_dorgi   = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'dorgi',   color: dk_JQ });
+      const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulergi', color: tk_JQ });
+      const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
+
+      const jq_weichang = L.geoJSON(karunAll, {
+        filter: f => {
+          const p = f.properties || {};
+          return p.time === '가경23년' && zoneType(p.zone) === 'aba';
+        },
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon: icon_jq_weichang }),
+        onEachFeature: (feature, l) => {
+          const p = feature.properties || {};
+          const labelText = p.name_chf || p.NAME_FT || '정보';
+          l.bindTooltip(labelText, {
+            permanent: true, direction: 'top', offset: [0, -8],
+            opacity: 1, className: 'plain-label'
+          });
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            highlightLayer(l);
+            openInfoPanel(labelText, p);
+          });
+        }
+      });
+      registerLabelLayer(jq_weichang);
+
+      const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
+      const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
+      const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
       
-// 옹정: 변내(dorgi) + 변외(tulergi)
-const yz_dorgi   = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'dorgi',   color: dk_YZ });
-const yz_tulergi = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'tulergi', color: tk_YZ });
-const karun_yz_bundle = L.layerGroup([yz_dorgi, yz_tulergi]);
-
-// 건륭
-const ql_dorgi   = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'dorgi',   color: dk_QL });
-const ql_tulergi = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'tulergi', color: tk_QL });
-const karun_ql_bundle = L.layerGroup([ql_dorgi, ql_tulergi]);
-
-// 가경
-const jq_dorgi   = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'dorgi',   color: dk_JQ });
-const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulergi', color: tk_JQ });
-const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
-
-// 가경위장
-const jq_weichang = L.geoJSON(karunAll, {
-  filter: f => {
-    const p = f.properties || {};
-    return p.time === '가경23년' && zoneType(p.zone) === 'aba';
-  },
-  pointToLayer: (f, latlng) => L.marker(latlng, { icon: icon_jq_weichang }),
-  onEachFeature: (feature, layer) => {
-    const p = feature.properties || {};
-    const labelText = p.name_chf || p.NAME_FT || '정보';
-    layer.bindTooltip(labelText, {
-      permanent: true, direction: 'top', offset: [0, -8],
-      opacity: 1, className: 'plain-label'
-    });
-    layer.on('click', (e) => {
-      L.DomEvent.stopPropagation(e);
-      highlightLayer(layer);
-      openInfoPanel(labelText, p);
-    });
-  }
-});
-
-// 도광
-const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
-const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
-const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
-      
-// 성경장군 경계선
-const admin_v1 = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/admin_lv1_line.geojson', {
+      const admin_v1 = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
 
-const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_admin_pt.geojson', {
-  label: true,
-  pointToLayer: (feature, latlng) => {
-    const marker = L.marker(latlng, { icon: icon_admin });
-    oms.addMarker(marker);                                
-    return marker;
-  }
-});
+      const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_admin_pt.geojson', {
+        label: true,
+        pointToLayer: (feature, latlng) => {
+          const marker = L.marker(latlng, { icon: icon_admin });
+          oms.addMarker(marker);                                
+          return marker;
+        }
+      });
       admin_pts.addTo(map);
  
       const giyamun_pt = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/manchu_giyamun_pt.geojson',
-      mkIconPt(icon_giyamun, { label: true })
+        mkIconPt(icon_giyamun, { label: true })
       );
+      registerLabelLayer(giyamun_pt);
       
       const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
       const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_kxyz.geojson',
-      mkIconPt(icon_wp_gate, { label: false })
+        mkIconPt(icon_wp_gate, { label: false })
       );
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       
       const wpqianlong = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-qianlong.geojson', { style: willowpalisade });
       const wp_gate_ql_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_ql.geojson',
-      mkIconPt(icon_wp_gate, { label: false })
+        mkIconPt(icon_wp_gate, { label: false })
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
-      wpqianlong_bundle.addTo(map)
+      wpqianlong_bundle.addTo(map);
 
       wcTypeLayers['盛京圍場'].addTo(map);
       const wcType_bundle = L.layerGroup([wcTypeLayers['王多羅樹圍'], wcTypeLayers['演武圍'], wcTypeLayers['鮮圍']]);
@@ -764,51 +727,68 @@ const admin_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/da
 
       const wcKarun_bundle = L.layerGroup(Object.values(wcKarunLayers));
       
-      const groupedOverlays = {
-  "기본지리정보": {
-    "성경장군 관할 경계선": admin_v1,
-    "행정 지명(lv1/lv2)": admin_pts,
-    "역참": giyamun_pt,
-    "유조변(강희-옹정)": wpkangxi_bundle,
-    "유조변(건륭이후)": wpqianlong_bundle
-  },
-"성경위장 105小圍": {
-  "유형별 小圍區(폴리곤)": wcType_bundle,
-  "<span style='display:inline-block;width:10px;height:10px;background:#cc44ff;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>演武圍": wc_pt_演武圍,
-  "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;border-radius:50%;margin-right:5px;'></span>王多羅樹圍": wc_pt_王多羅樹圍,
-  "<span style='display:inline-block;width:10px;height:10px;background:#ff2222;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>鮮圍": wc_pt_鮮圍,
-  "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>御圍": wc_pt_御圍,
-},
+      // 라벨 토글 레이어를 지도에 추가 (기본 on)
+      labelToggleLayer.addTo(map);
 
-  "성경위장 카룬": {
-  "성경위장 12 카룬": jq_weichang,
-  "12 카룬의 관할 범위": wcKarun_bundle,
-},
-        
-  "참고자료_성경 변내/변외카룬": {
-    "邊臺(강희기 이후)":         kx_tai,
-    "변외카룬(강희말기)":        kx_tulergi,
-    "변내/변외카룬(옹정초기)":   karun_yz_bundle,
-    "변내/변외카룬(건륭중기)":   karun_ql_bundle,
-    "변내/변외카룬(가경 9년)":   karun_jq_bundle,
-    "변내/변외카룬(도광 27년)":  karun_dg_bundle,
-  },
-  "참고자료_CHGIS (1820)": {
-    "省 경계선": chgisprov_pgn,
-    "府 경계선": chgispref_pgn,
-    "府 치소": chgispref_pts,
-    "인문지명": chgistwn_pts,
-  },
-};
-L.control.groupedLayers(baseLayers, groupedOverlays, {
-  collapsed: false,
-  groupsCollapsible: false,
-  groupCheckboxes: true
-}).addTo(map);
-wcTypeLayers['盛京圍場'].bringToFront();
-      map.on('overlayadd', () => {
-  wcTypeLayers['盛京圍場'].bringToFront();
-});
+      const groupedOverlays = {
+        "표시 설정": {
+          "지명 라벨 표시": labelToggleLayer,
+        },
+        "기본지리정보": {
+          "성경장군 관할 경계선": admin_v1,
+          "행정 지명(lv1/lv2)": admin_pts,
+          "역참": giyamun_pt,
+          "유조변(강희-옹정)": wpkangxi_bundle,
+          "유조변(건륭이후)": wpqianlong_bundle
+        },
+        "성경위장 105小圍": {
+          "유형별 小圍區(폴리곤)": wcType_bundle,
+          "<span style='display:inline-block;width:10px;height:10px;background:#cc44ff;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>演武圍": wc_pt_演武圍,
+          "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;border-radius:50%;margin-right:5px;'></span>王多羅樹圍": wc_pt_王多羅樹圍,
+          "<span style='display:inline-block;width:10px;height:10px;background:#ff2222;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>鮮圍": wc_pt_鮮圍,
+          "<span style='display:inline-block;width:10px;height:10px;background:#ff9900;clip-path:polygon(50% 0%,0% 100%,100% 100%);margin-right:5px;'></span>御圍": wc_pt_御圍,
+        },
+        "성경위장 카룬": {
+          "성경위장 12 카룬": jq_weichang,
+          "12 카룬의 관할 범위": wcKarun_bundle,
+        },
+        "참고자료_성경 변내/변외카룬": {
+          "邊臺(강희기 이후)":         kx_tai,
+          "변외카룬(강희말기)":        kx_tulergi,
+          "변내/변외카룬(옹정초기)":   karun_yz_bundle,
+          "변내/변외카룬(건륭중기)":   karun_ql_bundle,
+          "변내/변외카룬(가경 9년)":   karun_jq_bundle,
+          "변내/변외카룬(도광 27년)":  karun_dg_bundle,
+        },
+        "참고자료_CHGIS (1820)": {
+          "省 경계선": chgisprov_pgn,
+          "府 경계선": chgispref_pgn,
+          "府 치소":   chgispref_pts,
+          "인문지명":  chgistwn_pts,
+        },
+      };
+
+      L.control.groupedLayers(baseLayers, groupedOverlays, {
+        collapsed: false,
+        groupsCollapsible: false,
+        groupCheckboxes: true
+      }).addTo(map);
+
+      wcTypeLayers['盛京圍場'].bringToFront();
+      map.on('overlayadd', (e) => {
+        wcTypeLayers['盛京圍場'].bringToFront();
+        // 라벨 토글 레이어가 추가되면 → 라벨 켜기
+        if (e.layer === labelToggleLayer) {
+          setLabelsVisible(true);
+        }
+      });
+      map.on('overlayremove', (e) => {
+        // 라벨 토글 레이어가 제거되면 → 라벨 끄기
+        if (e.layer === labelToggleLayer) {
+          setLabelsVisible(false);
+        }
+      });
+
     })().catch(err => {
       console.error(err);
       alert(err.message || err);
