@@ -381,7 +381,7 @@
     
     const esriShaded = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 13, attribution: 'Tiles &copy; Esri' }
+      { maxZoom: 13, maxNativeZoom: 13, attribution: 'Tiles &copy; Esri' }
     );
 
     const labels = L.tileLayer(
@@ -390,10 +390,7 @@
     );
 
     satellite.addTo(map);
-    const baseLayers = {
-      "위성": satellite, 
-      "OSM": osm
-    };
+    const baseLayers = {"위성": satellite, "음영도": esriShaded, "OSM": osm};
 
     const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
 
