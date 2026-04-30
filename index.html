@@ -714,13 +714,13 @@
       
       const wpkangxi = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-kangxi.geojson', { style: willowpalisade });
       const wp_gate_kx_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_kxyz.geojson',
-        mkIconPt(icon_wp_gate, { label: false })
+        mkIconPt(icon_wp_gate, { label: true })
       );
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       
       const wpqianlong = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade-qianlong.geojson', { style: willowpalisade });
       const wp_gate_ql_pts = await loadGeoJSON('https://mucenfere.github.io/mukden_karun/data/willowpalisade_gate_ql.geojson',
-        mkIconPt(icon_wp_gate, { label: false })
+        mkIconPt(icon_wp_gate, { label: true })
       );
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
       wpqianlong_bundle.addTo(map);
